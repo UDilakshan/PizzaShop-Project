@@ -3,7 +3,7 @@ import { loginbg } from '../asserts'
 import { logo4} from '../asserts'
 import {LoginInput} from "../components"
 import {FaEnvelope, FaLock} from "../asserts/icons"
-import {motion} from "framer-motion"
+import {motion} from "framer-motion";
 
 const Login = () => {
 
@@ -11,6 +11,13 @@ const[userEmail,setUserEmail]=useState("")
 const[isSignUp,setIsSignUp]=useState(false)
 const [password,setPassword]=useState("")
 const [confirm_password,setConfirm_password]=useState("")
+
+const buttonClick = () => {
+  // Define the logic you want to execute on button click
+  console.log('Button clicked!');
+  // Add your logic here, such as navigating to the signup page
+  // or changing the state to switch between login and signup
+};
 
   return (
     <div className='w-screen h-screen relative overflow-hidden flex'>
@@ -61,11 +68,30 @@ const [confirm_password,setConfirm_password]=useState("")
              type="password"
              isSignUp={isSignUp} /> 
             )}
-            {!isSignUp ? <p> Doesn't have an account :<motion.button></motion.button> </p>:<p> </p>}
-        </div>
+            {!isSignUp ? (
+            <p style={{color:'whitesmoke',fontSize:'20px' }}>  Doesn't have an account  :{" "}
+            <motion.button
+             {...buttonClick}
+             className="text-blue-300 font-medium text-2xl underline cursor-pointer bg-transparent"
+            onClick={()=> setIsSignUp(true)}>
+              Crete one
+              </motion.button>
+             </p>
+             ):
+             ( 
+              <p style={{color:'whitesmoke',fontSize:'20px' }}>  Already  have an account :{" "}
+             <motion.button
+              {...buttonClick} 
+               className= "text-blue-300 font-medium text-2xl  underline cursor-pointer bg-transparent"
+               onClick={()=> setIsSignUp(false)}>
+               sign-in here
+               </motion.button>
+              </p>
+             )}
+            
+       </div>
     </div>
     </div>
   )
 }
-
-export default Login
+export default Login;
