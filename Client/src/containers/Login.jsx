@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { loginbg } from '../asserts'
 import { logo4} from '../asserts'
 import {LoginInput} from "../components"
-import {FaEnvelope, FaLock} from "../asserts/icons"
+import {FaEnvelope, FaLock, FcGoogle} from "../asserts/icons"
 import {motion} from "framer-motion";
 
 const Login = () => {
@@ -40,7 +40,7 @@ const buttonClick = () => {
         </div>
         {/*welcome txt*/}
         <p className='text-4xl font-bold text-black '>Welcome Back </p>
-        <p className='text-xl font-thin  text-black-800  mt-2 '> Sign in with following</p>
+        <p className='text-xl font-thin  text-black-800  mt-2 '> {isSignUp ? "Sign up":"Sign in"} with following</p>
         {/*input section*/}
         <div className='w-full  flex flex-col items-center justify-center gap-6 px-4 md:px-12 py-4'>
             <LoginInput 
@@ -88,8 +88,30 @@ const buttonClick = () => {
                </motion.button>
               </p>
              )}
-            
+        {/* button section*/}  
+        {isSignUp ?(
+        <motion.button {...buttonClick} className='w-full px-4 py-2  rounded-md bg-red-400
+         cursor-pointer text-white text-xl font-medium hover:bg-red-500 transition-all duration-150'>
+          Sign Up
+        </motion.button>   
+        ) :(
+          <motion.button {...buttonClick} className='w-full px-4 py-2  rounded-md bg-red-400
+         cursor-pointer text-white text-xl font-medium hover:bg-red-500 transition-all duration-150'>
+          Sign in
+        </motion.button>  )}
        </div>
+        <div className='flex items-center justify-between gap-16'>
+          <div className='w-24 h-[1px] rounded-md bg-slate-50'> </div>
+          <p className='text-white size-3'> or </p>
+          <div className='w-24 h-[1px] rounded-md bg-slate-50'> </div>
+        </div>
+          <br></br>
+        <motion.div {...buttonClick} className='flex items-center justify-center px-20 py-2 bg-slate-50 
+         backdrop-blur-md cursor-pointer rounded-3xl gap-3'>
+          <FcGoogle className='text-3xl'/>
+          <p className='text-xl font-semi-bold  text-black '> Sign in with Google </p>
+        </motion.div>
+
     </div>
     </div>
   )
