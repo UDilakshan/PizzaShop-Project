@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { loginbg } from '../asserts'
 import { logo4} from '../asserts'
 import {LoginInput} from "../components"
-import {FaEnvelope, FaLock, FcGoogle} from "../asserts/icons"
+import {FaEnvelope, FcGoogle} from "../asserts/icons"
 import {motion} from "framer-motion";
 
 const Login = () => {
@@ -56,7 +56,7 @@ const loginWithGoogle=()=>{
 
             <LoginInput 
             placeHolder={"Password here"}
-             icon={<FaLock className='text-2xl' text-textColor> </FaLock> }
+             icon={<FaEnvelope className='text-2xl' text-textColor> </FaEnvelope> }
              inputState={password} 
              inputStateFun={setPassword}
              type="password"
@@ -65,7 +65,7 @@ const loginWithGoogle=()=>{
             {isSignUp &&(
              <LoginInput 
              placeHolder={"Confirm_Password here"}
-             icon={<FaLock className='text-2xl' text-textColor> </FaLock> }
+             icon={<FaEnvelope className='text-2xl' text-textColor> </FaEnvelope> }
              inputState={confirm_password} 
              inputStateFun={setConfirm_password}
              type="password"
