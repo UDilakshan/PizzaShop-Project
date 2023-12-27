@@ -19,6 +19,9 @@ const buttonClick = () => {
   // or changing the state to switch between login and signup
 };
 
+const loginWithGoogle=()=>{
+  console.log("clicked");
+}
   return (
     <div className='w-screen h-screen relative overflow-hidden flex'>
         {/*background*/}
@@ -107,7 +110,8 @@ const buttonClick = () => {
         </div>
           <br></br>
         <motion.div {...buttonClick} className='flex items-center justify-center px-20 py-2 bg-slate-50 
-         backdrop-blur-md cursor-pointer rounded-3xl gap-3'>
+         backdrop-blur-md cursor-pointer rounded-3xl gap-3'
+         onClick={loginWithGoogle}>
           <FcGoogle className='text-3xl'/>
           <p className='text-xl font-semi-bold  text-black '> Sign in with Google </p>
         </motion.div>
