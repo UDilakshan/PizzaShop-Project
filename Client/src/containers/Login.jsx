@@ -8,7 +8,7 @@ import { buttonClick } from '../animation'
 import {useNavigate} from "react-router-dom"
 import {getAuth,signInWithPopup,GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword} 
 from "firebase/auth"
-import {app} from "../config/firebase.config"
+import {app} from "../firebase.config"
 import { validateUserJWTToken } from '../api'
 
 const Login = () => {
@@ -31,7 +31,7 @@ const loginWithGoogle= async ()=>{
         validateUserJWTToken(token).then((data)=>{
           console.log(data);
         })
-        navigate("/", {replace: true});
+        navigate("/Home", {replace: true});
       })
     }
   })
@@ -93,7 +93,7 @@ const signUpWithEmailPass = async () => {
                       const data = await validateUserJWTToken(token);
                       console.log(data);
                   });
-                  navigate("/", {replace: true});
+                  navigate("/Home", {replace: true});
               }
           });
           }
@@ -102,7 +102,7 @@ const signUpWithEmailPass = async () => {
     }
     
     return (
-      <div className='w-screen h-screen relative overflow-hidden flex'>
+      <div className='w-screen h-screen relative overflow-hidden flex p-0'>
           {/*background*/}
           <img 
           src={loginbg}
@@ -112,7 +112,7 @@ const signUpWithEmailPass = async () => {
           />
           {/*context box*/}
           <div className='flex flex-col items-center bg-blend-hard-light 
-           w-[50%] md:w-508 h-full z-10 backdrop-blur-md p-2 px-6 py-8'
+           w-[40%] md:w-508 h-full z-10 backdrop-blur-md p-2 px-6 py-8'
            style={{ backdropFilter: 'blur(11px) brightness(90%) saturate(100%) hue-rotate(10deg)' }} >
           {/* top logo */}
           <div className='flex items-center justify-start gap-4 w-full'>

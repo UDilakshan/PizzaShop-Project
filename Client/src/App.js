@@ -1,22 +1,30 @@
 import React from "react";
-import { Route,Routes } from 'react-router-dom'
-import {Login,Main} from "./containers"
-
+import {HomeContainer, Login} from "./containers"
+import Header from "./components/Header";
+import { Route, Routes,useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { CreateContainer, MainContainer } from "./containers";
+//import "./index.css";
 const App = () => {
-  return (
-    <div className="w-screen min-h-screen h-auto flex flex-col items-center justify-center ">
-    
-    <Routes>
-        <Route path="/*"  element={<Main/>} />
-        <Route path="/Login"  element={<Login/>} />
-    </Routes>
-    </div>
-  )
-}
+  const location = useLocation();
+  const isHomePage = location.pathname === '/Home' && "/createItem" ;
 
+  return (
+    <AnimatePresence mode='wait'>
+        <div className="w-screen h-fixed flex flex-col">
+        {isHomePage && <Header />} 
+          <main className=" w-screen">
+    <Routes>
+        <Route path="/"  element={<Login/>} />
+        <Route  path="/Home" element={<MainContainer/>}/>
+        <Route path="/createItem" element={<CreateContainer/>}/>
+    </Routes>
+    
+    </main>
+      </div>
+
+   </AnimatePresence>
+  );
+}
 export default App;
-/*return(
-<h1 className="text-3xl font-bold underline">
-Hello world!
-</h1>
-)}*/
+
