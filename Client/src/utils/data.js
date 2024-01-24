@@ -14,5 +14,44 @@ export const pizzaData = [
     {id:4, name: 'Premium', decp: 'The special items in Jaffna', imgsrc: Pizza4},
     {id:5, name: 'Desserts', decp: 'Choco bread, Garlic bread', imgsrc: Pizza5},
     {id:6, name: 'Soft Drinks', decp: 'Coco and Pepsi soda items ', imgsrc: Pizza6},
-    {id:7, name: 'New to Menu', decp: 'Pasta and Briyani items', imgsrc: Pizza7},
+    {id:7, name: 'New items', decp: 'Pasta and Briyani items', imgsrc: Pizza7},
 ]
+
+export const categories = [
+    {
+      id: 1,
+      name: "Promo",
+      urlParamName: "Promo",
+    },
+    {
+      id: 2,
+      name: "Veg-Pizza",
+      urlParamName: "Veg-Pizza",
+    },
+    {
+      id: 3,
+      name: "Non-Veg",
+      urlParamName: "Non-Veg",
+    },
+    {
+      id: 4,
+      name: "Premium",
+      urlParamName: "Premium",
+    },
+    {
+      id: 5,
+      name: "Desserts",
+      urlParamName: "Desserts",
+    },
+    {
+      id: 6,
+      name: "Soft Drinks",
+      urlParamName: "Soft Drinks",
+    },
+  
+    {
+      id: 7,
+      name: "New Items",
+      urlParamName: "New Items",
+    },
+  ];

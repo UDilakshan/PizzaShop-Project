@@ -9,6 +9,7 @@ const pizzaImages = [Bn1,Bn2,Bn3,Bn4];
 
 function HomeContainer() {
   const [currentPizzaIndex, setCurrentPizzaIndex] = useState(0);
+
   useEffect(() => {
     // Interval to switch to the next pizza image every 3 seconds
     const intervalId = setInterval(() => {

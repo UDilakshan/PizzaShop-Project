@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdShoppingBasket, MdAdd, MdLogout } from "react-icons/md";
 import { motion } from 'framer-motion';
-import "../../src/index.css";
+
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {app} from "../firebase.config";
 
@@ -50,7 +50,7 @@ function Header() {
     }
 
   return (
-    <div className='fixed z-50 w-screen h-24 p-3 px-4 md:p-5 md:px-16 cursor-pointer bg-red-600'>
+    <div className='fixed z-50 w-screen h-24 p-3 px-4 md:p-6 md:px-16 cursor-pointer bg-black'>
         {/* desktop */}
         <div className='hidden md:flex w-full h-full items-center justify-between'>
 
@@ -69,23 +69,36 @@ function Header() {
         exit = {{opacity:0, x: 200 }} 
         
         className='flex items-center gap-8'>
+            <Link to={"/"}>
             <li className='text-base text-red-100 hover:text-headingColor duration-100 
             transition-all ease-in-out cursor-pointer'>Home</li>
+            </Link>
+            <Link to ={"/MenuContainer"}>
             <li className='text-base  text-red-100 hover:text-headingColor duration-100 
             transition-all ease-in-out cursor-pointer'>Menu</li>
+            </Link>
+             <Link to = {"/Aboutus"}>
             <li className='text-base  text-red-100 hover:text-headingColor duration-100 
             transition-all ease-in-out cursor-pointer'>About Us</li>
+            </Link>
+            <Link to = {"/Service"}>
             <li className='text-base  text-red-100 hover:text-headingColor duration-100 
             transition-all ease-in-out cursor-pointer'>Service</li>
+            </Link>
         </motion.ul>
 
+        <Link to = {"/Carditem"}>
         <div className='relative flex items-center justify-center'>
+            
             <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
+            
             <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg 
             flex items-center justify-center'>
-                <p className='text-xs text-white font-semibold'>2</p>
+                <p className='text-xs text-white font-semibold'>2</p>                
             </div>
+            
         </div>
+        </Link>
 
 
             <div className='relative'>
@@ -138,13 +151,18 @@ function Header() {
         <div className='flex items-center justify-between md:hidden w-full h-full'>
 
 
+        <Link to = {"/Carditem"}>
         <div className='relative flex items-center justify-center'>
+            
             <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
+            
             <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg 
             flex items-center justify-center'>
-                <p className='text-xs text-white font-semibold'>2</p>
+                <p className='text-xs text-white font-semibold'>2</p>                
             </div>
+            
         </div>
+        </Link>
 
 
         <Link to = {"/"} className='flex items-center gap-2'>
@@ -185,14 +203,22 @@ function Header() {
 
             <ul
                 className='flex flex-col'>
-                    <li className='text-base text-textColor hover:text-headingColor duration-100 
-                    transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2'>Home</li>
-                    <li className='text-base text-textColor hover:text-headingColor duration-100 
-                    transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2'>Menu</li>
-                    <li className='text-base text-textColor hover:text-headingColor duration-100 
-                    transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2'>About Us</li>
-                    <li className='text-base text-textColor hover:text-headingColor duration-100 
-                    transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2'>Service</li>
+                     <Link to={"/"}>
+            <li className='text-base text-red-100 hover:text-headingColor duration-100 
+            transition-all ease-in-out cursor-pointer'>Home</li>
+            </Link>
+            <Link to ={"/MenuContainer"}>
+            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
+            transition-all ease-in-out cursor-pointer'>Menu</li>
+            </Link>
+             <Link to = {"/Aboutus"}>
+            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
+            transition-all ease-in-out cursor-pointer'>About Us</li>
+            </Link>
+            <Link to = {"/Service"}>
+            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
+            transition-all ease-in-out cursor-pointer'>Service</li>
+            </Link>
             </ul>
 
                 <p className='m-2 p-2 rounded-md shadow-md flex items-center justify-center bg-gray-200 gap-3 cursor-pointer
