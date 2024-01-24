@@ -69,21 +69,23 @@ function Header() {
         exit = {{opacity:0, x: 200 }} 
         
         className='flex items-center gap-8'>
-            <Link to={"/"}>
-            <li className='text-base text-red-100 hover:text-headingColor duration-100 
-            transition-all ease-in-out cursor-pointer'>Home</li>
+            <Link to="/">
+            <motion.li whileTap={{ scale: 1.6 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer'>Home </motion.li>
             </Link>
+
             <Link to ={"/MenuContainer"}>
-            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
-            transition-all ease-in-out cursor-pointer'>Menu</li>
+            <motion.li whileTap={{ scale: 1.6 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer'>Menu </motion.li>
             </Link>
+
              <Link to = {"/Aboutus"}>
-            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
-            transition-all ease-in-out cursor-pointer'>About Us</li>
+             <motion.li whileTap={{ scale: 1.6 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer'>About us </motion.li>
             </Link>
             <Link to = {"/Service"}>
-            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
-            transition-all ease-in-out cursor-pointer'>Service</li>
+            <motion.li whileTap={{ scale: 1.6 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer'>Service</motion.li>
             </Link>
         </motion.ul>
 
@@ -203,21 +205,23 @@ function Header() {
 
             <ul
                 className='flex flex-col'>
-                     <Link to={"/"}>
-            <li className='text-base text-red-100 hover:text-headingColor duration-100 
-            transition-all ease-in-out cursor-pointer'>Home</li>
+            <Link to="/">
+            <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
+            transition-all ease-in-out cursor-pointer px-8'>Home </motion.li>
             </Link>
+
             <Link to ={"/MenuContainer"}>
-            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
-            transition-all ease-in-out cursor-pointer'>Menu</li>
+            <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
+            transition-all ease-in-out cursor-pointer px-8'>Menu </motion.li>
             </Link>
+
              <Link to = {"/Aboutus"}>
-            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
-            transition-all ease-in-out cursor-pointer'>About Us</li>
+             <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
+            transition-all ease-in-out cursor-pointer px-8'>About us </motion.li>
             </Link>
             <Link to = {"/Service"}>
-            <li className='text-base  text-red-100 hover:text-headingColor duration-100 
-            transition-all ease-in-out cursor-pointer'>Service</li>
+            <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
+            transition-all ease-in-out cursor-pointer px-8'>Service</motion.li>
             </Link>
             </ul>
 
