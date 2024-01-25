@@ -4,11 +4,8 @@ import { motion } from "framer-motion";
 import {
   MdFastfood, 
   MdCloudUpload, 
-  MdDelete, 
-  MdFoodBank, 
+  MdDelete,  
   MdAttachMoney } from 'react-icons/md';
-import { TbSquareRoundedPlusFilled, TbSquareRoundedMinusFilled } from "react-icons/tb";
-
 import { categories } from '../utils/data';
 import Loader from '../components/Loader';
 import { storage } from '../firebase.config';
@@ -29,20 +26,11 @@ const CreateContainer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(null);
   const [{ foodItems }, dispatch] = useStateValue();
+  const [isPriceValid, setIsPriceValid] = useState(true);
 
 
 
   const Navigate = useNavigate();
-  const handleCategoryChange = (event) => {
-  const selectedValue = event.target.value;
-
-if(selectedValue === 'New Category'){
-  Navigate('/AddCategory');
-} else{
-
-  setCategory(selectedValue);
-}
-};
 
   const uploadImage = (e) => {
     setIsLoading(true);
@@ -96,13 +84,27 @@ if(selectedValue === 'New Category'){
       }, 4000)
     })
   };
+
+
+  const handlePriceChange = (e) => {
+    const inputValue = e.target.value;
+
+    const isValidInteger = /^\d+$/.test(inputValue);
+
+    if (isValidInteger || inputValue === "") {
+      setPrice(inputValue);
+      setIsPriceValid(true);
+    } else {
+      setIsPriceValid(false);
+    }
+  };
   
   const saveDetails = () => {
     setIsLoading(true);
     try {
       if (!title || !imageAsset || !price || !category) {
         setFields(true);
-        setMsg('Required fields can nott be empty');
+        setMsg('Required fields can not be empty');
         setAlertStatus('danger');
         setTimeout(() => {
           setFields(false); 
@@ -198,8 +200,7 @@ if(selectedValue === 'New Category'){
 
         <div className='w-full'>
          <div className='flex items-center gap-2' >
-          <select onChange={handleCategoryChange} 
-          className='outline-none w-full text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer'>
+          <select className='outline-none w-full text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer'>
             <option value="other" className='bg-white'>Select Category</option>
             {categories && categories.map(item => (
               <option key={item.id} className='text-base border-0 outline-none capitalize bg-white text-headingColor'
@@ -211,12 +212,13 @@ if(selectedValue === 'New Category'){
             
           </select>
 
-            <button
+            <motion.button whileTap={{ scale: 0.6 }}
                 type="button"
-                className="border-none bg-blue-500 px-4 py-2 rounded-md text-white"
+                className="border-none bg-cartNumBg px-2 hover:bg-black md:hover:bg-black py-1 rounded-2xl
+                transition-all ease-in-out text-white"
                 onClick={() => Navigate('/EditCategory')}>
                 Edit Category
-          </button>
+          </motion.button>
         </div>
         </div>
 
@@ -263,20 +265,23 @@ if(selectedValue === 'New Category'){
             type='text' 
             required 
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={handlePriceChange}
             placeholder="Price"
-            className='w-full h-full text-lg bg-transparent outline-none
-            border-none placeholder:text-gray-400'/>
+            className={`w-full h-full text-lg bg-transparent outline-none border-none placeholder:text-gray-400 ${
+              !isPriceValid ? "border-red-500" : ""
+            }`} />
+
           </div>
         </div>
 
         <div className='flex items-center w-full '>
-           <button type='button' className='ml-0 md:ml-auto w-full md:w-auto
-           border-none outline-none bg-black px-12 py-2 rounded-lg
-           text-lg text-white font-semibold onClick={saveDetails}' onClick ={saveDetails}>
-            Save
-           </button>
+          <motion.button whileTap={{scale : 0.6}}
+              type='button'
+              className='ml-0 md:ml-auto w-full md:w-auto border-none outline-none bg-emerald-500 px-12 py-2 hover:bg-black rounded-2xl text-lg text-white font-semibold'
+              onClick={saveDetails}> Save
+          </motion.button>
         </div>
+
       </div>
     </div>
   )
