@@ -40,8 +40,8 @@ function Header() {
 
 
     const logout = ()=>{
-        setIsMenu(false)
-        localStorage.clear()
+        setIsMenu(false);
+        localStorage.clear();
 
         dispatch({
             type : actionType.SET_USER,
@@ -70,36 +70,32 @@ function Header() {
         
         className='flex items-center gap-8'>
             <Link to="/">
-            <motion.li whileTap={{ scale: 1.6 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'>Home </motion.li>
+            <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer' onClick={() =>setIsMenu(false)}>Home </motion.li>
             </Link>
 
             <Link to ={"/MenuContainer"}>
-            <motion.li whileTap={{ scale: 1.6 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'>Menu </motion.li>
+            <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>Menu </motion.li>
             </Link>
 
              <Link to = {"/Aboutus"}>
-             <motion.li whileTap={{ scale: 1.6 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'>About us </motion.li>
+             <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>About us </motion.li>
             </Link>
             <Link to = {"/Service"}>
-            <motion.li whileTap={{ scale: 1.6 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'>Service</motion.li>
+            <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>Service</motion.li>
             </Link>
         </motion.ul>
 
-        <Link to = {"/Carditem"}>
-        <div className='relative flex items-center justify-center'>
-            
-            <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
-            
-            <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg 
-            flex items-center justify-center'>
-                <p className='text-xs text-white font-semibold'>2</p>                
-            </div>
-            
+        <Link to="/Carditem">
+          <motion.div className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
+        <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
+        <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center'>
+            <p className='text-xs text-white font-semibold'>2</p>
         </div>
+          </motion.div>
         </Link>
 
 
@@ -125,7 +121,7 @@ function Header() {
                       <Link to = {"/createItem"}>
 
                           <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
-                          transition-all duration-100 ease-in-out text-textColor text-base'>
+                          transition-all duration-100 ease-in-out text-textColor text-base'onClick={() =>setIsMenu(false)}>
                           New Item <MdAdd /> </p>
 
                       </Link>
@@ -153,17 +149,13 @@ function Header() {
         <div className='flex items-center justify-between md:hidden w-full h-full'>
 
 
-        <Link to = {"/Carditem"}>
-        <div className='relative flex items-center justify-center'>
-            
-            <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
-            
-            <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg 
-            flex items-center justify-center'>
-                <p className='text-xs text-white font-semibold'>2</p>                
-            </div>
-            
+        <Link to="/Carditem">
+          <motion.div className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
+        <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
+        <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center'>
+            <p className='text-xs text-white font-semibold'>2</p>
         </div>
+          </motion.div>
         </Link>
 
 
@@ -195,7 +187,7 @@ function Header() {
                 <Link to = {"/createItem"}>
 
                     <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
-                    transition-all duration-100 ease-in-out text-textColor text-base'>
+                    transition-all duration-100 ease-in-out text-textColor text-base'onClick={()=>setIsMenu(false)}>
                     New Item <MdAdd /> </p>
 
                 </Link>
@@ -207,21 +199,21 @@ function Header() {
                 className='flex flex-col'>
             <Link to="/">
             <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'>Home </motion.li>
+            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Home </motion.li>
             </Link>
 
             <Link to ={"/MenuContainer"}>
             <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'>Menu </motion.li>
+            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Menu </motion.li>
             </Link>
 
              <Link to = {"/Aboutus"}>
              <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'>About us </motion.li>
+            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>About us </motion.li>
             </Link>
             <Link to = {"/Service"}>
             <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'>Service</motion.li>
+            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Service</motion.li>
             </Link>
             </ul>
 
