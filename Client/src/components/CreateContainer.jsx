@@ -214,8 +214,8 @@ const CreateContainer = () => {
 
             <motion.button whileTap={{ scale: 0.6 }}
                 type="button"
-                className="border-none bg-cartNumBg px-2 hover:bg-black md:hover:bg-black py-1 rounded-2xl
-                transition-all ease-in-out text-white"
+                className="border-none bg-cartNumBg px-2 hover:bg-black py-1 rounded-2xl
+                transition-all ease-in-out text-white md:ml-8 md:text-base text-sm"
                 onClick={() => Navigate('/EditCategory')}>
                 Edit Category
           </motion.button>

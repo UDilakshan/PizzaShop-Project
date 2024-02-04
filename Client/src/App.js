@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { CreateContainer, MainContainer, MenuContainer } from "./components";
+import { CreateContainer, HomeContainer, MenuContainer, EditCategory, Aboutus, Service, CardContainer, Login } from "./components";
 
-import EditCategory from "./components/EditCategory";
 import { BrowserRouter as Router } from "react-router-dom";
-import Aboutus from "./Container/Aboutus";
-import Service from "./Container/Service";
-import Carditem from "./Container/Cartitem";
+import { useStateValue } from "./context/StateProvider";
+import { getAllFoodItems } from "./utils/firebaseFunctions";
+import { actionType } from "./context/reducer";
 
 
 function App() {
+
+  const [{foodItems}, dispatch] = useStateValue();
+
+  const fetchData = async () => {
+    await getAllFoodItems().then((data) => {
+      dispatch({
+        type : actionType.SET_FOOD_ITEMS,
+        foodItems : data,
+      });
+    });
+  };
+
+  useEffect(()=>{
+    fetchData();
+  },[]);
+  
   return (
     
     <AnimatePresence mode='wait'>
@@ -21,11 +36,12 @@ function App() {
 
           <main className="mt-14 md:mt-20 w-screen">
             <Routes>
-              <Route path="/" element={<MainContainer/>}/>
+              <Route path= "/Login" element = {<Login/>} />
+              <Route path="/" element={<HomeContainer/>}/>
               <Route path="/createItem" element={<CreateContainer/>}/>
               <Route path = "/Aboutus" element = {<Aboutus />} />
               <Route path = "/Service" element = {<Service/>} />
-              <Route path = "/Carditem" element = {<Carditem/>} />
+              <Route path = "/CardContainer" element = {<CardContainer/>}/>
               <Route path = "/MenuContainer" element = {<MenuContainer/>} />
               <Route path="/EditCategory" element={<EditCategory />} />
             </Routes>

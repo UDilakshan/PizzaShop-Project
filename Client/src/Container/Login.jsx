@@ -1,108 +1,183 @@
-import React, { useState } from 'react'
-import { loginbg} from '../asserts'
-import { logo1} from '../asserts'
-import {LoginInput} from "../components"
-import {FaEnvelope, FcGoogle} from "../asserts/icons"
-import {motion} from "framer-motion";
-import { buttonClick } from '../animation'
-import {useNavigate} from "react-router-dom"
-import {getAuth,signInWithPopup,GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword} 
-from "firebase/auth"
-import {app} from "../firebase.config"
-import { validateUserJWTToken } from '../api'
+import React, { useState} from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { app, storage, auth } from '../firebase.config';
+import { validateUserJWTToken } from '../api';
+import { sendEmailVerification } from 'firebase/auth';
+import Logo from "./../images/Logo.png";
+import loginbg from "../images/Veg Pizza/Hot_butter_mushroom.png";
+import { FaEnvelope, FcGoogle } from '../asserts/icons';
+import { buttonClick } from '../animation';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { fadeInOut } from '../animation';
 
-const Login = () => {
 
-const[userEmail,setUserEmail]=useState("")
-const[isSignUp,setIsSignUp]=useState(false)
-const [password,setPassword]=useState("")
-const [confirm_password,setConfirm_password]=useState("")
+const LoginInput = ({placeHolder,icon,inputState,inputStateFun,type,isSignUp})=>{
 
-const firebaseAuth= getAuth(app)
-const provider= new GoogleAuthProvider()
+  const[isFocus,setIsFocus]=useState(false);
 
-const navigate=useNavigate();
-
-const loginWithGoogle= async ()=>{
- await signInWithPopup(firebaseAuth,provider).then(userCred=>{
-  firebaseAuth.onAuthStateChanged((cred)=>{
-    if(cred){
-      cred.getIdToken().then(token=>{
-        validateUserJWTToken(token).then((data)=>{
-          console.log(data);
-        })
-        navigate("/Home", {replace: true});
-      })
-    }
-  })
-})
+  return( 
+   <motion.div 
+   {...fadeInOut}
+   className={`flex f items-center justify-center gap-4 bg-slate-100  backdrop-blur-md 
+   rounded-md w-full px-4 py-2 ${isFocus ? "shadow-md shadow-red-600 " : "shadow-none" }`}>
+     {icon}
+     <input type={type} placeholder={placeHolder}
+      className="w-full h-full bg-transparent text-headingColor text-lg font-semibold border-none outline-none"
+      value={inputState}
+      onChange={(e)=> inputStateFun(e.target.value)}
+      onFocus={()=> setIsFocus(true)}
+      onBlur={()=> setIsFocus(false)}
+      />
+  </motion.div>
+  )
 }
 
-const signUpWithEmailPass = async () => {
-  if (userEmail === "" || password === "" || confirm_password === "") {
-      // console.log("box is empty");
-  } else {
-      if (password === confirm_password) {
-        setUserEmail("");
-        setConfirm_password("");
-        setPassword("");
-      
-          try {
-              const userCred = await createUserWithEmailAndPassword(firebaseAuth, userEmail, password);
+const Login = () => {
+  //const [user]=useAuthState(auth);
+  const [userEmail, setUserEmail] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirm_password, setConfirm_password] = useState('');
+  const [showVerifyMessage, setShowVerifyMessage] = useState(false);
 
-              firebaseAuth.onAuthStateChanged((cred) => {
-                  if (cred) {
-                      cred.getIdToken().then(async (token) => {
-                          const data = await validateUserJWTToken(token);
-                          console.log(data);
-                      });
-                      navigate("/", {replace: true});
-                  }
-              });
+  const firebaseAuth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
 
-              //console.log("Equal");
-          } catch (error) {
-            // Handle the error
-            if (error.code === "auth/email-already-in-use") {
-                // Inform the user that the email is already in use
-                console.log("Email is already in use. Please log in or reset your password.");
-            } else {
-                // Handle other errors
-                console.error("Error during user creation:", error);
-            }
+  const loginWithGoogle = async () => {
+    await signInWithPopup(firebaseAuth, provider).then((userCred) => {
+      firebaseAuth.onAuthStateChanged((cred) => {
+        if (cred) {
+          cred.getIdToken().then((token) => {
+            validateUserJWTToken(token).then((data) => {
+              console.log(data);
+            });
+            navigate('/', { replace: true });
+          });
         }
+      });
+    });
+  };
+
+  const sendVerificationEmail = async (user) => {
+    try {
+      await sendEmailVerification(user);
+      console.log('Verification email sent successfully');
+    } catch (error) {
+      console.error('Error sending verification email:', error);
+    }
+  };
+
+
+  const signUpWithEmailPass = async () => {
+    if (userEmail === '' || password === '' || confirm_password === '') {
+      // Handle empty fields
     } else {
-        // alert
+      try {
+        // Create user (even if email is already in use)
+        const userCred = await createUserWithEmailAndPassword(firebaseAuth, userEmail, password);
+  
+        // Send email verification
+        await sendVerificationEmail(userCred.user);
+  
+        // Wait for the user to refresh their data
+        await userCred.user.reload();
+  
+        // Check if email is verified
+        if (userCred.user.emailVerified) {
+          const token = await userCred.user.getIdToken();
+          const data = await validateUserJWTToken(token);
+          console.log(data);
+  
+          // Navigate to the main page
+          navigate('/', { replace: true });
+        } else {
+          // Provide feedback to the user
+          console.log('Email is not yet verified.pls verify your mail and press the signup button again');
+        }
+  
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          // If email is already in use, check if it's verified
+          const existingUser = await signInWithEmailAndPassword(firebaseAuth, userEmail, password);
+  
+          // Wait for the user to refresh their data
+          await existingUser.user.reload();
+  
+          // Check if email is verified
+          if (existingUser.user.emailVerified) {
+            const token = await existingUser.user.getIdToken();
+            const data = await validateUserJWTToken(token);
+            console.log(data);
+  
+            // Navigate to the main page
+            navigate('/', { replace: true });
+          } else {
+            
+            // Provide feedback to the user
+            console.log('Email is not yet verified.pls verify it and press the signup button.');
+          }
+  
+        } else {
+          console.error('Error during user creation:', error);
+        }
+      }
+    }
+  };
+  
+  
+  
+
+const signInWithEmailPass = async () => {
+  if (userEmail !== '' && password !== '') {
+    try {
+      // Sign in user
+      await signInWithEmailAndPassword(firebaseAuth, userEmail, password);
+
+      // Check if email is verified
+      const user = firebaseAuth.currentUser;
+      if (user && user.emailVerified) {
+        const token = await user.getIdToken();
+        const data = await validateUserJWTToken(token);
+        console.log(data);
+
+        // Navigate to the main page
+        navigate('/', { replace: true });
+      } else {
+        // Provide feedback to the user
+        console.log('Email is not yet verified. pls verify');
+      }
+    } catch (error) {
+      console.error('Error during sign in:', error);
     }
   }
 };
-
-// Usage of the signUpWithEmailPass function
-  signUpWithEmailPass().catch((error) => {
-    // Handle any errors that might occur during the function execution
-    console.error("Error during signUpWithEmailPass:", error);
-  });
-
-    const signInWithEmailPass = async () => {
-      if(userEmail !== "" && password !== ""){
-        await signInWithEmailAndPassword(firebaseAuth,userEmail,password).then(
-          (userCred)=>{
-            firebaseAuth.onAuthStateChanged((cred) => {
-              if (cred) {
-                  cred.getIdToken().then(async (token) => {
-                      const data = await validateUserJWTToken(token);
-                      console.log(data);
-                  });
-                  navigate("/Home", {replace: true});
-              }
-          });
-          }
-        )
+    const resetPassword = async () => {
+      if (userEmail === '') {
+        // Handle empty email field
+        console.log('Please provide your email to reset the password.');
+        return;
       }
-    }
-    
+
+      try {
+        // Send password reset email
+        await sendPasswordResetEmail(firebaseAuth, userEmail);
+        console.log('Password reset email sent successfully. Check your email inbox.');
+
+        // Provide feedback to the user
+        setShowVerifyMessage(true);
+
+      } catch (error) {
+        console.error('Error sending password reset email:', error);
+      }
+    };
+
+
     return (
-      <div className='w-screen h-screen relative overflow-hidden flex p-0'>
+      <div className='w-screen h-screen relative overflow-hidden flex'>
           {/*background*/}
           <img 
           src={loginbg}
@@ -112,11 +187,11 @@ const signUpWithEmailPass = async () => {
           />
           {/*context box*/}
           <div className='flex flex-col items-center bg-blend-hard-light 
-           w-[40%] md:w-508 h-full z-10 backdrop-blur-md p-2 px-6 py-8'
+           w-[50%] md:w-508 h-full z-10 backdrop-blur-md p-2 px-6 py-8'
            style={{ backdropFilter: 'blur(11px) brightness(90%) saturate(100%) hue-rotate(10deg)' }} >
           {/* top logo */}
           <div className='flex items-center justify-start gap-4 w-full'>
-              <img src={logo1}
+              <img src={Logo}
                className='w-14 highlight-logo' 
                alt=""
                />
@@ -136,24 +211,50 @@ const signUpWithEmailPass = async () => {
                inputStateFun={setUserEmail}
                type="email"
                isSignUp={isSignUp} /> 
-  
-              <LoginInput 
-              placeHolder={"Password here"}
-               icon={<FaEnvelope className='text-2xl text-textColor'> </FaEnvelope> }
-               inputState={password} 
-               inputStateFun={setPassword}
-               type="password"
-               isSignUp={isSignUp} /> 
-  
-              {isSignUp &&(
-               <LoginInput 
-               placeHolder={"Confirm_Password here"}
-               icon={<FaEnvelope className='text-2xl text-textColor'> </FaEnvelope> }
-               inputState={confirm_password} 
-               inputStateFun={setConfirm_password}
-               type="password"
-               isSignUp={isSignUp} /> 
-              )}
+
+
+            {!isSignUp && (
+            <>
+              <LoginInput
+                placeHolder="Password here"
+                icon={<FaEnvelope className='text-2xl text-textColor'></FaEnvelope>}
+                inputState={password}
+                inputStateFun={setPassword}
+                type="password"
+                isSignUp={isSignUp}
+              />
+
+                <motion.p
+                {...buttonClick}
+                className='text-blue-200 font-medium text-xl underline cursor-pointer bg-transparent'
+                onClick={() => resetPassword()}
+              >
+                Forgot_Password?
+              </motion.p>
+            </>
+          )}
+
+            {isSignUp && (
+            <>
+              <LoginInput
+                placeHolder="Password here"
+                icon={<FaEnvelope className='text-2xl text-textColor'></FaEnvelope>}
+                inputState={password}
+                inputStateFun={setPassword}
+                type="password"
+                isSignUp={isSignUp}
+              />
+
+              <LoginInput
+                placeHolder="Confirm_Password here"
+                icon={<FaEnvelope className='text-2xl text-textColor'></FaEnvelope>}
+                inputState={confirm_password}
+                inputStateFun={setConfirm_password}
+                type="password"
+                isSignUp={isSignUp}
+              />
+            </>
+          )}
               {!isSignUp ? (
               <p style={{color:'Window',fontSize:'20px' }} >  Doesn't have an account  :{" "}
               <motion.button
@@ -177,7 +278,7 @@ const signUpWithEmailPass = async () => {
           {/* button section*/}  
           {isSignUp ?(
           <motion.button {...buttonClick} className='w-full px-4 py-2  rounded-md bg-red-400
-           cursor-pointer text-white text-xl font-medium hover:bg-red-500 transition-all duration-150'
+          cursor-pointer text-white text-xl font-medium hover:bg-red-500 transition-all duration-150'
            onClick={signUpWithEmailPass}
            >
             Sign Up
@@ -208,5 +309,3 @@ const signUpWithEmailPass = async () => {
     )
   }
   export default Login;
-  
-  
