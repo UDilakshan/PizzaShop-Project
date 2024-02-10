@@ -18,12 +18,12 @@ const CardContainter = () => {
         });
   };
   
-  return (
+  return (  
     <motion.div 
     initial={{opacity:0, x:200}} 
     animate={{opacity:1, x:200}} 
     exit={{opacity:0, x:0}} 
-    className='fixed top-5 right-0 w-2/5 h-screen bg-white drop-shadow-md
+    className='fixed top-24 right-0 w-2/5 h-[90%] bg-white drop-shadow-md
      flex flex-col z-[101]'>
         <div className='w-full  flex items-center justify-between p-4 cursor-pointer bg-slate-600'>
         <motion.div  whileTap={{scale:0.8}} onClick={showCart}>
@@ -43,7 +43,7 @@ const CardContainter = () => {
   {/*Name section*/}
     <div className='flex flex-col gap-2'>
             <p className='text-base text-black'></p>
-            <p className='text-sm block text-black font-semibold'> Rs500/=</p>
+            <p className='text-sm block text-black font-semibold'>Rs.0.00</p>
           </div>
           {/* Button section*/}
           <div className='group flex items-center gap-2 ml-auto cursor-pointer'>

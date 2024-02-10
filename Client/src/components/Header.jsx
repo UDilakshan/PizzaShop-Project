@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdShoppingBasket, MdAdd, MdLogout } from "react-icons/md";
 import { motion } from 'framer-motion';
 
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
 import {app} from "../firebase.config";
 
 
@@ -11,7 +11,7 @@ import Avatar from "./../images/avatar.png";
 import { Link } from "react-router-dom";
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
-
+import {MD5} from 'crypto-js';
 
 
 function Header() {
@@ -23,31 +23,54 @@ function Header() {
 
     const [isMenu, setIsMenu] = useState(false);
 
-    const login = async () =>{
-            if(!user){
-                   const {user : {refreshToken, providerData}} = await signInWithPopup(firebaseAuth, provider)
-                    dispatch({
-                        type : actionType.SET_USER,
-                        user : providerData[0],
-                    })
-                    localStorage.setItem('user', JSON.stringify(providerData[0]));
-                    }
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(firebaseAuth, (authUser) => {
+          if (authUser) {
+            // Extract the user from the authentication result
+            // Update the avatar based on the user's email
+            const newAvatarURL = `https://www.gravatar.com/avatar/${MD5(authUser.email)}?d=identicon`;
+            // setAvatarURL(newAvatarURL); // Uncomment this line if you are using a local state for avatar URL
+    
+            // Dispatch the user to the context
+            dispatch({
+              type: actionType.SET_USER,
+              user: authUser,
+            });
+          } else {
+            dispatch({
+              type: actionType.SET_USER,
+              user: null,
+            });
+          }
+        });
+    
+        return () => {
+          // Cleanup the subscription when the component unmounts
+          unsubscribe();
+        };
+      }, [firebaseAuth, dispatch]);
+    
+    
 
-            else{
-                setIsMenu(!isMenu);
-            }
+    const logout = async () => {
+        try {
+            // Sign out the user
+            await signOut(firebaseAuth);
+
+            // Clear user from the state
+            dispatch({
+                type: actionType.SET_USER,
+                user: null,
+            });
+
+            // Clear user from localStorage
+            localStorage.clear();
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
     };
 
 
-    const logout = ()=>{
-        setIsMenu(false);
-        localStorage.clear();
-
-        dispatch({
-            type : actionType.SET_USER,
-            user: null,
-        });
-    }
 
   return (
     <div className='fixed z-50 w-screen h-24 p-3 px-4 md:p-6 md:px-16 cursor-pointer bg-black'>
@@ -71,21 +94,21 @@ function Header() {
         className='flex items-center gap-8'>
             <Link to="/">
             <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer' onClick={() =>setIsMenu(false)}>Home </motion.li>
+            transition-all ease-in-out cursor-pointer'>Home </motion.li>
             </Link>
 
             <Link to ={"/MenuContainer"}>
             <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>Menu </motion.li>
+            transition-all ease-in-out cursor-pointer'>Menu </motion.li>
             </Link>
 
-             <Link to = {"/Aboutus"}>
+             <Link to = {"/AboutUs"}>
              <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>About us </motion.li>
+            transition-all ease-in-out cursor-pointer'>About Us </motion.li>
             </Link>
-            <Link to = {"/Service"}>
+            <Link to = {"/ContactUs"}>
             <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>Service</motion.li>
+            transition-all ease-in-out cursor-pointer'>Contact Us</motion.li>
             </Link>
         </motion.ul>
 
@@ -106,6 +129,18 @@ function Header() {
                  className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full'
                   alt="Avatar" /> 
 
+
+            {
+                user && (
+                    <div className='absolute px-4 flex items-center gap-2 py-2 '>
+                    <p className='text-black font-semibold text-xl -ml-16 mt-2 bg-orange-200 px-4 py-2 rounded-xl' onClick={logout}>Logout</p>
+                </div>
+                    
+                )
+            }
+
+
+ 
             {
                 isMenu && (
                     
@@ -121,7 +156,7 @@ function Header() {
                       <Link to = {"/createItem"}>
 
                           <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
-                          transition-all duration-100 ease-in-out text-textColor text-base'onClick={() =>setIsMenu(false)}>
+                          transition-all duration-100 ease-in-out text-textColor text-base'>
                           New Item <MdAdd /> </p>
 
                       </Link>
@@ -182,7 +217,7 @@ function Header() {
                 <Link to = {"/createItem"}>
 
                     <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
-                    transition-all duration-100 ease-in-out text-textColor text-base'onClick={()=>setIsMenu(false)}>
+                    transition-all duration-100 ease-in-out text-textColor text-base'>
                     New Item <MdAdd /> </p>
 
                 </Link>
@@ -194,21 +229,21 @@ function Header() {
                 className='flex flex-col'>
             <Link to="/">
             <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Home </motion.li>
+            transition-all ease-in-out cursor-pointer px-8'>Home </motion.li>
             </Link>
 
             <Link to ={"/MenuContainer"}>
             <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Menu </motion.li>
+            transition-all ease-in-out cursor-pointer px-8'>Menu </motion.li>
             </Link>
 
-             <Link to = {"/Aboutus"}>
+             <Link to = {"/AboutUs"}>
              <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>About us </motion.li>
+            transition-all ease-in-out cursor-pointer px-8'>About Us </motion.li>
             </Link>
-            <Link to = {"/Service"}>
+            <Link to = {"/ContactUs"}>
             <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Service</motion.li>
+            transition-all ease-in-out cursor-pointer px-8'>Contact Us</motion.li>
             </Link>
             </ul>
 
