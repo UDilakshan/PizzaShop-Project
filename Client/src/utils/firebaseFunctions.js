@@ -14,6 +14,8 @@ import {
       );
   };
   
+
+  //get all food items
   export const getAllFoodItems = async () => {
     const items = await getDocs(
       query(collection(firestore, "foodItems"), orderBy("id", "desc"))
