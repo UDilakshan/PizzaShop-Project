@@ -35,13 +35,14 @@ const CreateContainer = () => {
   const uploadImage = (e) => {
     setIsLoading(true);
     const imageFile = e.target.files[0];  //can upload only one image(zero index)
-    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`)
+    const storageRef = ref(storage, `Images/Category/${Date.now()}-${imageFile.name}`)
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
   uploadTask.on('state_changed', 
   (snapshot) => {
     const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
   }, 
+
   (error) => {
     console.log(error);
     setFields(true);
@@ -52,6 +53,7 @@ const CreateContainer = () => {
       setIsLoading(false)
     }, 4000);
   },
+
   () => {
     getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
       setImageAsset(downloadURL);
@@ -200,7 +202,8 @@ const CreateContainer = () => {
 
         <div className='w-full'>
          <div className='flex items-center gap-2' >
-          <select className='outline-none w-full text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer'>
+          <select onChange={(e)=>setCategory(e.target.value)} className='outline-none w-full text-base border-b-2 
+          border-gray-200 p-2 rounded-md cursor-pointer'>
             <option value="other" className='bg-white'>Select Category</option>
             {categories && categories.map(item => (
               <option key={item.id} className='text-base border-0 outline-none capitalize bg-white text-headingColor'
@@ -212,13 +215,13 @@ const CreateContainer = () => {
             
           </select>
 
-            <motion.button whileTap={{ scale: 0.6 }}
+              <motion.button whileTap={{ scale: 0.6 }}
                 type="button"
-                className="border-none bg-cartNumBg px-2 hover:bg-black md:hover:bg-black py-1 rounded-2xl
-                transition-all ease-in-out text-white"
+                className="border-none bg-cartNumBg px-2 hover:bg-black py-1 rounded-2xl
+                transition-all ease-in-out text-white md:ml-8 md:text-base text-sm"
                 onClick={() => Navigate('/EditCategory')}>
                 Edit Category
-          </motion.button>
+          </motion.button>  
         </div>
         </div>
 
@@ -277,7 +280,8 @@ const CreateContainer = () => {
         <div className='flex items-center w-full '>
           <motion.button whileTap={{scale : 0.6}}
               type='button'
-              className='ml-0 md:ml-auto w-full md:w-auto border-none outline-none bg-emerald-500 px-12 py-2 hover:bg-black rounded-2xl text-lg text-white font-semibold'
+              className='ml-0 md:ml-auto w-full md:w-auto border-none outline-none
+               bg-emerald-600 px-12 py-2 hover:bg-emerald-900 rounded-2xl text-lg text-white font-semibold'
               onClick={saveDetails}> Save
           </motion.button>
         </div>
