@@ -1,22 +1,49 @@
 import React from 'react';
-import { pizzaData } from '../utils/data';
+import { VegPizzaData } from '../utils/data';
+import {motion} from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useStateValue } from '../context/StateProvider';
+import CardContainter from '../Container/CardContainter';
+import RowContainer from '../Container/RowContainer';
 
+const MenuContainer = ({mdflag, data}) => {
 
-function MenuContainer(){
+  const [{cartShow},{foodItems},dispatch]=useStateValue();
+  //const[{scrollValue,setScrollValue}]=useState(0);
+  useEffect (()=> {},[cartShow]);
   return (
-    <div>
-      <div className='w-full h-full absolute flex items-start justify-start px-16 py-24 gap-x-2'>        
-    {pizzaData && pizzaData.map((n)=>(
-        <div key={n.id} className='w-190 p-4 bg-gray-200 backdrop-blur-md rounded-3xl flex flex-col items-center justify-center'>
-          <img src={n.imgsrc} className='w-40 -mt-20 rounded-md' alt='Pizza'  />
-          <p className="text-xl font-semibold text-neutral-700 mt-4">{n.name}</p>
-          <p className=' text-sm text-black font-semibold my-2 opacity-0 hover:opacity-100 transition-opacity'>{n.decp}</p>
-{/*           <p className=' text-sm text-headingColor font-semibold'><span className='text-xs text-red-600'>$</span>{n.price}</p>
- */}        </div>
-        ))}
-      </div>
-    </div>
+   <div className={`w-full flex items-center md:justify-start md:gap-3 md:px-8 my-12 ${
+      mdflag ? "overflow-x-scroll scrollbar-none" : "overflow-hidden scroll-smooth flex-wrap"
+    }`}>
+
+      {VegPizzaData && VegPizzaData.map(item =>(
+
+            <div key={item?.id} className='w-375 min-w-[375px] md:min-w-[400px] md:w-400 h-auto my-14 bg-cardOverlay rounded-lg backdrop-blur-lg hover:drop-shadow-2xl'>
+            <div className='w-full flex flex-row item-center justify-center px-4 my-4'>  
+                <motion.img src={item?.imgsrc} className='w-28 ml-4 rounded-lg -mt-12 shadow-xl'
+                whileHover={{scale:1.1}} />
+                <div className='w-full flex flex-col items-center justify-center'>
+                  <p className='text-textColor font-semibold text-base'>{item?.name}</p>
+                  <p className='text-lg text-headingColor font-semibold px-12'>
+                      <span className='text-sm text-red-500 px-1'>Rs.</span>{item?.price}</p>
+              </div>
+            </div>
+            <div>
+              <motion.button type='button' className='text-slate-900 text-base ml-8 py-2 px-4 hover:text-slate-100 font-semibold hover:bg-orange-600
+                bg-orange-500 rounded-xl' whileTap={{scale :0.7}}>Customize</motion.button>
+            </div>
+
+            </div>
+
+      ))}
+      {cartShow && (<CardContainter/>)} 
+       
+
+    </div> 
+
+
+
   )
 }
 
-export default MenuContainer;
+export default MenuContainer
