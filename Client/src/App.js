@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import Header from "./components/Header";
 import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  CardContainer, Login, ContactUs, Customization } from "./components";
+import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  
+  CardContainer, Login, ContactUs, Customization, Header } from "./components";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { useStateValue } from "./context/StateProvider";
@@ -31,7 +31,7 @@ function App() {
 
   return (
     
-    <AnimatePresence mode='wait'>
+    <AnimatePresence mode="wait">
 
         <div className="w-screen h-auto flex flex-col">
           <Header />

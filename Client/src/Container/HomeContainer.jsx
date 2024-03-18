@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import NewUpdates from './NewUpdates';
+import NewUpdates from '../components/NewUpdates';
 import MenuContainer from './MenuContainer';
 import { useStateValue } from '../context/StateProvider';
-import CardContainter from '../Container/CardContainter';
-import CategoryContainer from './CategoryContainer';
+import CardContainter from './CardContainter';
+import CategoryContainer from '../components/CategoryContainer';
 
 
 function HomeContainer() {

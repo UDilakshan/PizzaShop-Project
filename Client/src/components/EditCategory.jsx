@@ -7,7 +7,7 @@ import {
   MdDelete,  
   MdAttachMoney } from 'react-icons/md';
 import { categoryData2 } from '../utils/data';
-import Loader from '../components/Loader';
+import Loader from './Loader';
 import { storage } from '../firebase.config';
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { getAllFoodItems, saveItem } from '../utils/firebaseFunctions';
