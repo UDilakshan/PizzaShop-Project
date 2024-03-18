@@ -11,11 +11,11 @@ import { actionType } from "./context/reducer";
 
 
 function App() {
-/* 
+ 
   const [{foodItems}, dispatch] = useStateValue();
-
+  
   const fetchData = async () => {
-    await getAllFoodItems().then((data) => {
+    await getAllFoodItems() .then((data) => {
       dispatch({
         type : actionType.SET_FOOD_ITEMS,
         foodItems : data,
@@ -26,7 +26,9 @@ function App() {
   useEffect(()=>{
     fetchData();
   },[]);
-   */
+   
+
+
   return (
     
     <AnimatePresence mode='wait'>

@@ -9,6 +9,8 @@ import {app} from "../firebase.config";
 import Logo from "./../images/Logo.png";
 import Avatar from "./../images/avatar.png";
 import { Link } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
+
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
 import {MD5} from 'crypto-js';
@@ -97,7 +99,7 @@ function Header() {
             transition-all ease-in-out cursor-pointer'>Home </motion.li>
             </Link>
 
-            <Link to ={"/MenuContainer"}>
+            <Link to='/MenuContainer'>
             <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
             transition-all ease-in-out cursor-pointer'>Menu </motion.li>
             </Link>

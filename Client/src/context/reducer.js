@@ -26,7 +26,7 @@ const reducer = (state, action) => {
         case actionType.SET_FOOD_ITEMS:
         return{
             ...state,
-            footItems: action.footItems,
+            foodItems: action.foodItems,
         };
 
         default: return state;

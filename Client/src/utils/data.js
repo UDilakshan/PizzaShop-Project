@@ -71,6 +71,10 @@ export const categoryData = [
     {id:7, name: 'New items', decp: 'Pasta and Briyani items', imgsrc: Pizza7, name: "New Items",  urlParamName: "New Items" },
 ]
 
+export const categoryData2 = [
+  {  id: 1, name: "Categories", urlParamName: "Categories",}
+]
+
 export const VegPizzaData = [
   {id:1, name: 'Cheese Tomato', imgsrc: CheesePizza, price: "585.00"},
   {id:2, name: 'Devilled Panner', imgsrc: Devilled_Panner, price: "980.00"},

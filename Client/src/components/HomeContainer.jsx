@@ -3,6 +3,7 @@ import NewUpdates from './NewUpdates';
 import MenuContainer from './MenuContainer';
 import { useStateValue } from '../context/StateProvider';
 import CardContainter from '../Container/CardContainter';
+import CategoryContainer from './CategoryContainer';
 
 
 function HomeContainer() {
@@ -13,6 +14,7 @@ function HomeContainer() {
     <div className='md:mt-8 mt-12 '>
 
        <NewUpdates/>
+       <CategoryContainer />
        <MenuContainer /> 
        {cartShow && (<CardContainter/>)} 
 

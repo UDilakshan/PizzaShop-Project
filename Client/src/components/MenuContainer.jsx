@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 const MenuContainer = ({flag, data}) => {
   return (
 
-    <div>
-              <div className='mb-40'>
+    <div> 
+              {/* <div className='mb-40'>
                   <div className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4">
                       <section className='w-full mt-12 md:mt- mb-10'>
                       <div className='w-full flex items-center justify-between px-8'>
@@ -35,11 +35,11 @@ const MenuContainer = ({flag, data}) => {
 
                   </div>  
                  
-            </div>
+            </div> */}
 
 
 
-            <div className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
+            <div id='Offers' className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
 
             <section className='w-full mt-12 md:mt-24 mb-10'>
             <div className='w-full flex items-center justify-between px-8'>
@@ -52,7 +52,7 @@ const MenuContainer = ({flag, data}) => {
 
             {OffersData && OffersData.map(item =>(
 
-              <div key={item?.id} className='w-375 min-w-[375px] md:min-w-[400px] md:w-400 h-auto my-5 md:my-4 bg-pink-300
+              <div key={item?.id}  className='w-375 min-w-[375px] md:min-w-[400px] md:w-400 h-auto my-5 md:my-4 bg-pink-300
               rounded-lg backdrop-blur-lg hover:drop-shadow-2xl'>
               <div className='w-full flex flex-row item-center justify-center px-4 my-4'>  
                   <motion.img src={item?.imgsrc} className='w-28 md:w-32 ml-4 rounded-lg shadow-xl'
@@ -79,7 +79,7 @@ const MenuContainer = ({flag, data}) => {
               </div>
 
 
-              <div className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
+              <div id='Veg' className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
 
                 <section className='w-full mt-12 md:mt-24 mb-10'>
                 <div className='w-full flex items-center justify-between px-8'>
@@ -120,7 +120,7 @@ const MenuContainer = ({flag, data}) => {
            </div>
 
 
-              <div className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
+              <div id='Non-Veg' className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
 
                 <section className='w-full mt-12 md:mt-24 mb-10'>
                 <div className='w-full flex items-center justify-between px-8'>
@@ -160,7 +160,7 @@ const MenuContainer = ({flag, data}) => {
 
            </div>
 
-           <div className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
+           <div id='Premium' className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
 
                 <section className='w-full mt-12 md:mt-24 mb-10'>
                 <div className='w-full flex items-center justify-between px-8'>
@@ -200,7 +200,7 @@ const MenuContainer = ({flag, data}) => {
 
            </div>
 
-           <div className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
+           <div id='Desserts' className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
 
                 <section className='w-full mt-12 md:mt-24 mb-10'>
                 <div className='w-full flex items-center justify-between px-8'>
@@ -240,7 +240,7 @@ const MenuContainer = ({flag, data}) => {
 
            </div>
 
-           <div className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
+           <div id='New' className= "w-full flex items-center md:justify-start md:gap-3 md:px-8 my-4 flex-wrap">
 
                 <section className='w-full mt-12 md:mt-24 mb-10'>
                 <div className='w-full flex items-center justify-between px-8'>
