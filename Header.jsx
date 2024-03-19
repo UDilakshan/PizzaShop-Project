@@ -1,15 +1,23 @@
 import React, { useState,useEffect} from 'react';
-import { MdShoppingBasket, MdAdd, MdLogout } from "react-icons/md";
+import { MdShoppingBasket, MdAdd, MdLogin, MdLogout  } from "react-icons/md";
+import { IoHome } from "react-icons/io5";
+import { RiContactsBook2Fill } from "react-icons/ri";
+import { VscNewFile } from "react-icons/vsc";
+import { FaCircleUser } from "react-icons/fa6";
+import { BiSolidFoodMenu } from "react-icons/bi";
 import { motion } from 'framer-motion';
 
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+//import { getAuth,  } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {app} from "../firebase.config";
 
 import Logo from "./../images/Logo.png";
 import { Link, useNavigate } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
 import Login from '../Container/Login';
+import {MD5} from 'crypto-js';
 
 function Header() {
 
@@ -23,17 +31,9 @@ function Header() {
 
     const navigate = useNavigate();
      // State variable to hold the login button text
-     const [loginButtonText, setLoginButtonText] = useState(user ? user.email : 'Login');
+     //const [loginButtonText, setLoginButtonText] = useState(user ? user.email : 'Login');
 
-     useEffect(() => {
-        // Update login button text when user state changes
-        if (user) {
-            setLoginButtonText(user.email);
-        } else {
-            setLoginButtonText('Login');
-        }
-    }, [user]);
-
+     
     const toggleLoginPopup = () => {
         if (window.location.pathname == '/') {
         setIsOpenPopup(!isOpenPopup);
@@ -50,9 +50,30 @@ function Header() {
     const closePopup = () => {
         setIsOpenPopup(false);
     };
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(firebaseAuth, (authUser) => {
+          if (authUser) {
+            // Extract the user from the authentication result
+            // Update the avatar based on the user's email
+            const newAvatarURL = `https://www.gravatar.com/avatar/${MD5(authUser.email)}?d=identicon`;
+            // setAvatarURL(newAvatarURL); // Uncomment this line if you are using a local state for avatar URL
+    
+            // Dispatch the user to the context
+            dispatch({
+              type: actionType.SET_USER,
+              user: authUser,
+            });
+          } else {
+            dispatch({
+              type: actionType.SET_USER,
+              user: null,
+            });
+          }
+        });
+
 
     // Update the login function to set the login button text to the user's email profile when logged in
-    const login = async () => {
+    /*const login = async () => {
         console.log('Login button clicked');
         if (!user) {
             signInWithPopup(firebaseAuth, provider)
@@ -82,6 +103,40 @@ function Header() {
         });
         setLoginButtonText('Login');
     };
+*/
+    return () => {
+        // Cleanup the subscription when the component unmounts
+        unsubscribe();
+    };
+    }, [firebaseAuth, dispatch]);
+
+    const handleClick = () =>{
+    if(user){
+        setIsMenu(!isMenu);
+    }
+        
+    }
+    
+    const logout = async () => {
+    setIsMenu(false);
+    try {
+        // Sign out the user
+        await signOut(firebaseAuth);
+
+        // Clear user from the state
+        dispatch({
+            type: actionType.SET_USER,
+            user: null,
+        });
+
+        // Clear user from localStorage
+        localStorage.clear();
+    } catch (error) {
+        console.error('Error during logout:', error);
+    }
+
+    
+    };
 
   return (
     <div className='fixed z-50 w-screen h-24 p-3 px-4 md:p-6 md:px-16 cursor-pointer bg-black'>
@@ -102,86 +157,130 @@ function Header() {
         animate = {{opacity:1, x: 0 }} 
         exit = {{opacity:0, x: 200 }} 
         
-        className='flex items-center gap-8'>
-            <Link to="/">
-            <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer' onClick={() =>setIsMenu(false)}>Home </motion.li>
-            </Link>
-            
-            <Link to ={"/MenuContainer"}>
-            <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>Menu </motion.li>
-            </Link>
-
-             <Link to = {"/Aboutus"}>
-             <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>About us </motion.li>
-            </Link>
-            <Link to = {"/Service"}>
-            <motion.li whileTap={{ scale: 1.3 }} className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer'onClick={() =>setIsMenu(false)}>Service</motion.li>
+         className='flex items-center gap-8'>
+            <Link to = {"/"}>
+            <motion.li whileTap={{scale:1.3}}>
+            <div className='flex gap-1 text-base text-red-100 hover:text-orange-500 duration-100 transition-all ease-in-out cursor-pointer'>
+            <IoHome className='mt-[2.5px]'/>
+                <p>Home</p>
+            </div>  
+            </motion.li>
             </Link>
 
-            <button
-              className="text-base text-red-100 hover:text-orange-500 duration-100 transition-all ease-in-out cursor-pointer"
-              onClick={toggleLoginPopup}
-              >
-              {loginButtonText}
-              </button>
-        
-        </motion.ul>
+            <Link to='/MenuContainer'>
+            <motion.li whileTap={{scale:1.3}}>
+            <div className='flex gap-1 text-base text-red-100 hover:text-orange-500 duration-100 transition-all ease-in-out cursor-pointer'>
+            <BiSolidFoodMenu className='mt-[2.5px]'/>
+            <p>Menu</p>
+            </div>  
+            </motion.li>
+            </Link>
 
-        <Link to="/CardContainer">
-          <motion.div className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
-        <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
+             <Link to = {"/AboutUs"}>
+             <motion.li whileTap={{scale:1.3}}>
+             <div className='flex gap-1 text-base text-red-100 hover:text-orange-500 duration-100 transition-all ease-in-out cursor-pointer'>
+             <FaCircleUser className='mt-[2.5px]'/>
+             <p>About Us</p>
+             </div>  
+             </motion.li>
+            </Link>
+
+            <Link to = {"/ContactUs"}>
+            <motion.li whileTap={{scale:1.3}}>
+             <div className='flex gap-1 text-base text-red-100 hover:text-orange-500 duration-100  transition-all ease-in-out cursor-pointer'>
+            <RiContactsBook2Fill className='mt-[2.5px]'/>
+            <p>Contact Us</p>
+            </div>  
+            </motion.li>
+            </Link>
+           </motion.ul>
+
+           <Link to="/CardContainer">
+          <motion.div
+          initial = {{opacity:0, x: 200 }} 
+          animate = {{opacity:1, x: 0 }} 
+          exit = {{opacity:0, x: 200 }}
+          
+          className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
+        <MdShoppingBasket className='text-red-100 text-2xl cursor-pointer' />
         <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center'>
             <p className='text-xs text-white font-semibold'>2</p>
         </div>
           </motion.div>
         </Link>
 
-            {
-                isMenu && (
-                    
-                  <motion.div 
-                  initial = {{opacity: 0, scale: 0.6 }}
-                  animate = {{opacity: 1, scale: 1 }}
-                  exit = {{opacity: 0, scale: 0.6 }} 
+
+        <div className='relative'>
+    {!user && (
+        <div 
+            className='text-base text-red-100 hover:text-orange-500 duration-100 
+            transition-all ease-in-out cursor-pointer flex gap-1' 
+            onClick={toggleLoginPopup} 
+            whileTap={{ scale: 0.8 }}>
+            Login 
+            <MdLogin className='mt-1' />
+        </div>
+    )}
+
+               {user && (
+
+                  <motion.img
+                  initial = {{opacity:0, x: 200 }} 
+                  animate = {{opacity:1, x: 0 }} 
+                  exit = {{opacity:0, x: 200 }}
+                  whileTap={{ scale : 0.8 }} onClick = {handleClick}
+                  src={user.photoURL}
+                  className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full'
+                  alt="User image"/>
                   
-                  className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0'>
+                )}
 
-                  {user && user.email === "uthayakumardilakshan@gmail.com" && (
+          
+              {
 
-                      <Link to = {"/createItem"}>
+    isMenu && (
+    <motion.div 
+      initial = {{opacity: 0, scale: 0.6 }}
+      animate = {{opacity: 1, scale: 1 }}
+      exit = {{opacity: 0, scale: 0.6 }}                    
+      className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0'>
 
-                          <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
-                          transition-all duration-100 ease-in-out text-textColor text-base'onClick={() =>setIsMenu(false)}>
-                          New Item <MdAdd /> </p>
+    {   
+      user && user.email === "opizzashop@gmail.com" && (        
+        <Link to = {"/createItem"}>
+            <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
+            transition-all duration-100 ease-in-out text-textColor text-base rounded-lg hover:bg-slate-200' onClick={()=>setIsMenu(false)}>
+            New Item <MdAdd /> </p>
+        </Link>   
 
-                      </Link>
-                  )}
+    )}
 
-                      
-                </motion.div>
-                )
-            }
-                 
+        <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
+            transition-all duration-100 ease-in-out text-textColor text-base rounded-lg hover:bg-slate-200' onClick={logout}>
+            Logout <MdLogout /> </p>
 
+        </motion.div>
+        )
+        }
+        </div> 
         </div>
+        </div>
+
+
+
         
-
-        </div>
-
-
-
-
         {/* mobile */}
-        <div className='flex items-center justify-between md:hidden w-full h-full'>
-
-
+      <div className='flex items-center justify-between md:hidden w-full h-full'>
+        
         <Link to="/CardContainer">
-          <motion.div className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
-        <MdShoppingBasket className='text-textColor text-2xl cursor-pointer' />
+          <motion.div
+
+          initial = {{opacity:0, x: 200 }} 
+          animate = {{opacity:1, x: 0 }} 
+          exit = {{opacity:0, x: 200 }} 
+          
+          className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
+        <MdShoppingBasket className='text-red-100 text-2xl cursor-pointer' />
         <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center'>
             <p className='text-xs text-white font-semibold'>2</p>
         </div>
@@ -193,73 +292,128 @@ function Header() {
             <img src={Logo} className='object-cover w-12' alt="Logo" />
             <p className=' font-pacifico text-slate-100 text-xl font-bold'>Pizza Shop</p>
         </Link>
-
         
+
+          <div className='relative'>
+          {!user && (
+              <div 
+                  className='text-base text-red-100 hover:text-orange-500 duration-100 
+                  transition-all ease-in-out cursor-pointer flex gap-1' 
+                  onClick={toggleLoginPopup} 
+                  whileTap={{ scale: 0.8 }}>
+                  Login 
+                  <MdLogin className='mt-1' />
+              </div>
+          )}
+
+          {user && (
+
+            <motion.img
+            initial = {{opacity:0, x: 200 }} 
+            animate = {{opacity:1, x: 0 }} 
+            exit = {{opacity:0, x: 200 }} 
+
+            whileTap={{ scale : 0.6 }} onClick={handleClick}
+            src={user.photoURL}
+            className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full'
+            alt="User image"/>
+
+          )} 
+
             {
-            isMenu && (
+               isMenu && (
+                    
+                <motion.div 
+
+                initial = {{opacity:0, x: 200, scale: 0.6 }} 
+                animate = {{opacity:1, x: 0,scale: 1 }} 
+                exit = {{opacity:0, x: 200, scale: 0.6 }} 
                 
-            <motion.div 
-            initial = {{opacity: 0, scale: 0.6 }}
-            animate = {{opacity: 1, scale: 1 }}
-            exit = {{opacity: 0, scale: 0.6 }} 
-            
-            className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0'>
+                className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0'>
 
-            {user && user.email === "uthayakumardilakshan@gmail.com" && (
+                {user && user.email === "opizzashop@gmail.com" && (
 
-                <Link to = {"/createItem"}>
-
-                    <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
-                    transition-all duration-100 ease-in-out text-textColor text-base'onClick={()=>setIsMenu(false)}>
-                    New Item <MdAdd /> </p>
-
-                </Link>
+                    <Link to = {"/createItem"} >
+                      <div className='flex mt-4 hover:bg-orange-500 hover:text-slate-100 duration-100
+                       transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>
+                      <VscNewFile className='mt-1 ml-4'/>
+                      <p className='text-lg px-1'>
+                        New Item </p>
+                      </div>
+                    </Link>
             )}
 
 
 
             <ul
-                className='flex flex-col'>
-            <Link to="/">
-            <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Home </motion.li>
-            </Link>
+                className='flex flex-col gap-1'>
+              <Link to = {"/"}>
+                <motion.li whileTap={{scale:0.8}}>
+                      <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
+                       transition-all ease-in-out cursor-pointer mt-4' onClick={()=>setIsMenu(false)}>
+                      <IoHome className='mt-1 ml-4'/>
+                      <p className='text-lg px-1'>
+                        Home </p>
+                      </div>  
+                 </motion.li>
+              </Link>
 
             <Link to ={"/MenuContainer"}>
-            <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Menu </motion.li>
+               <motion.li whileTap={{scale:0.8}}>
+                      <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
+                       transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>
+                      <BiSolidFoodMenu className='mt-1 ml-4'/>
+                      <p className='text-lg px-1'>
+                        Menu </p>
+                      </div>  
+                 </motion.li>
             </Link>
 
-             <Link to = {"/Aboutus"}>
-             <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>About us </motion.li>
+             <Link to = {"/AboutUs"}>
+             <motion.li whileTap={{scale:0.8}}>
+                      <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
+                       transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>
+                      <FaCircleUser className='mt-1 ml-4'/>
+                      <p className='text-lg px-1'>
+                        About Us </p>
+                      </div>  
+                 </motion.li>
             </Link>
-            <Link to = {"/Service"}>
-            <motion.li whileTap={{ scale: 0.8 }} className='text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 
-            transition-all ease-in-out cursor-pointer px-8'onClick={()=>setIsMenu(false)}>Service</motion.li>
+
+            <Link to = {"/ContactUs"}>
+            <motion.li whileTap={{scale:0.8}}>
+                      <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
+                       transition-all ease-in-out cursor-pointer mb-4' onClick={()=>setIsMenu(false)}>
+                      <RiContactsBook2Fill className='mt-1 ml-4'/>
+                      <p className='text-lg px-1'>
+                        Contact Us </p>
+                      </div>  
+                 </motion.li>
             </Link>
+
+            <motion.li whileTap={{scale:0.8}}>
+                      <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
+                       transition-all ease-in-out cursor-pointer mb-4'>
+                      <MdLogout className='mt-1 ml-4'/>
+                      <p className='text-lg px-1 ' onClick={logout}>
+                        Logout </p>
+                      </div>  
+            </motion.li>
+                  
 
             </ul>
-
-                
-                
             </motion.div>
             )
             }
-        <button
-          className="text-base text-slate-900 hover:bg-orange-500 hover:text-slate-100 duration-100 transition-all ease-in-out cursor-pointer px-8"
-          onClick={toggleLoginPopup}
-                >
-                    Login
-                </button>
-        
-    </div>
-    
-                {/* Button to toggle the login popup */}
-            <button onClick={toggleLoginPopup}>Toggle Login Popup</button>
 
-            {/* Render the Login component conditionally */}
-            {isOpenPopup && <Login closePopup={closePopup} />}
+        </div> 
+            
+    </div>
+     {/* Button to toggle the login popup */}
+     <button onClick={toggleLoginPopup}></button>
+
+    {/* Render the Login component conditionally */}
+    {isOpenPopup && <Login closePopup={closePopup} />}
 </div>
   )
 }
