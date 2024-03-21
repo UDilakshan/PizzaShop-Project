@@ -1,71 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import Bn1 from "../images/Bn.gif";
-import Bn2 from "../images/Pizza2.png";
-import Bn3 from "../images/Pizza3.png";
-import Bn4 from "../images/Pizza4.png";
+import React from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
+import Bn1 from '../images/Non-veg/Bbq_pizza.png';
 
-const pizzaImages = [Bn1,Bn2,Bn3,Bn4];
+const pizzaImages = [Bn1, Bn1, Bn1, Bn1];
 
 function NewUpdates() {
-  const [currentPizzaIndex, setCurrentPizzaIndex] = useState(0);
-
-  useEffect(() => {
-    // Interval to switch to the next pizza image every 3 seconds
-    const intervalId = setInterval(() => {
-      setCurrentPizzaIndex((prevIndex) => (prevIndex + 1) % pizzaImages.length);
-    }, 5000);
-
-    // Cleanup the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, []); // Empty dependency array ensures the effect runs only once on mount
-
-  const goToPrevious = () => {
-    setCurrentPizzaIndex((prevIndex) => (prevIndex - 1 + pizzaImages.length) % pizzaImages.length);
-  };
-
-  const goToNext = () => {
-    setCurrentPizzaIndex((prevIndex) => (prevIndex + 1) % pizzaImages.length);
-  };
-
-  const goToIndex = (index) => {
-    setCurrentPizzaIndex(index);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
   };
 
   return (
-    <div >
-      <div>
-      {/* Show the current pizza image based on the index */}
-      <div className='flex flex-row'>
-        {pizzaImages.map((pizza, index) => (
-          <div
-            key={index}
-            className={`w-auto md:w-500 h-full md:h-50  ${index === currentPizzaIndex ? '' : 'hidden'}`}
-          >
-             <img src={pizza} className='w-full h-full object-cover rounded-md' alt={`pizza-${index + 1}`} />
-           </div>
+    <div className='mt-4'>
+      <Slider {...settings} className='flex flex-row' aria-hidden='true'>
+        {pizzaImages.map((image, index) => (
+          <div key={index} className='flex items-center justify-center w-20 h-20'>
+            <img src={image} alt={`Pizza ${index + 1}`} className='h-auto w-auto' />
+          </div>
         ))}
-      </div>
-
-      {/* Navigation dots */}
-      <div style={{ textAlign: 'center', marginTop: '10px' }} >
-        {pizzaImages.map((_, index) => (
-          <button
-            key={index}
-            className={`dot ${index === currentPizzaIndex ? 'active' : ''}`}
-            onClick={() => goToIndex(index)}
-          />
-        ))}
-      </div>
-    
-      <div className='flex items-center justify-center w-full bg-black mt-2 md:mt-5 md:py-3 py-2'>
-  
-</div>
-
-
-      </div>
+      </Slider>
+      <div className='flex items-center justify-center w-full bg-black mt-2 md:mt-5 md:py-3 py-2'></div>
     </div>
   );
 }
+
+const CustomPrevArrow = (props) => {
+  const { onClick } = props;
+  return <FaAngleLeft className='slick-prev' onClick={onClick} />;
+};
+
+const CustomNextArrow = (props) => {
+  const { onClick } = props;
+  return <FaAngleRight className='slick-next' onClick={onClick} />;
+};
 
 export default NewUpdates;

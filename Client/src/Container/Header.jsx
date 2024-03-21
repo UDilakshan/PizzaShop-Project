@@ -5,20 +5,20 @@ import { RiContactsBook2Fill } from "react-icons/ri";
 import { VscNewFile } from "react-icons/vsc";
 import { FaCircleUser } from "react-icons/fa6";
 import { BiSolidFoodMenu } from "react-icons/bi";
-
 import { motion } from 'framer-motion';
 
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {app} from "../firebase.config";
 
 
-import Logo from "./../images/Logo.png";
+import Logo from "../images/OtherImages/Logo.png";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
+import Login from '../Container/Login';
 import {MD5} from 'crypto-js';
 
 
@@ -29,6 +29,33 @@ function Header() {
     const [{user}, dispatch] = useStateValue();
 
     const [isMenu, setIsMenu] = useState(false);
+
+    const [isOpenPopup, setIsOpenPopup] = useState(false);
+
+    const navigate = useNavigate();
+    // State variable to hold the login button text
+    //const [loginButtonText, setLoginButtonText] = useState(user ? user.email : 'Login');
+
+        
+    const toggleLoginPopup = () => {
+      if (window.location.pathname == '/') {
+      setIsOpenPopup(!isOpenPopup);
+      document.body.style.overflow = isOpenPopup ? 'auto' : 'hidden'; // Prevent scrolling when popup is open
+      }
+  // If the user is not on the home page, redirect to the home page
+  else if (window.location.pathname !== '/') {
+      window.location.href = '/'; // Redirect to the home page
+      document.body.style.overflow = isOpenPopup ? 'auto' : 'hidden';
+  }
+  };
+
+  // Function to close the login popup
+  const closePopup = () => {
+      setIsOpenPopup(false);
+  }; 
+
+
+
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, (authUser) => {
@@ -50,6 +77,7 @@ function Header() {
             });
           }
         });
+        
     
         return () => {
           // Cleanup the subscription when the component unmounts
@@ -63,7 +91,7 @@ function Header() {
         }
            
       }
-  
+
 
     const logout = async () => {
       setIsMenu(false);
@@ -83,6 +111,7 @@ function Header() {
             console.error('Error during logout:', error);
         }
 
+        navigate('/');
         
     };
 
@@ -165,7 +194,7 @@ function Header() {
 
 
             <div className='relative'>
-                <Link to="/Login">
+                
                     {!user && (
                       <motion.div 
                           initial = {{opacity:0, x: 200 }} 
@@ -173,14 +202,14 @@ function Header() {
                           exit = {{opacity:0, x: 200 }}>
                         <motion.p 
                         className='text-base text-red-100 hover:text-orange-500 duration-100 
-                    transition-all ease-in-out cursor-pointer flex gap-1'  whileTap={{ scale : 0.8 }}>Login <MdLogin 
+                    transition-all ease-in-out cursor-pointer flex gap-1' onClick={toggleLoginPopup} whileTap={{ scale : 0.8 }}>Login <MdLogin 
                     initial = {{opacity:0, x: 200 }} 
                     animate = {{opacity:1, x: 0 }} 
                     exit = {{opacity:0, x: 200 }}
                     className='mt-1'/></motion.p> 
                     </motion.div>
                     )}
-                </Link >
+                
 
                {user && (
 
@@ -205,7 +234,7 @@ function Header() {
                       className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0'>
 
                   {   
-                      user && user.email === "uthayakumardilakshan@gmail.com" && (        
+                      user && user.email === "opizzashop@gmail.com" && (        
                         <Link to = {"/createItem"}>
                             <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
                             transition-all duration-100 ease-in-out text-textColor text-base rounded-lg hover:bg-slate-200' onClick={()=>setIsMenu(false)}>
@@ -254,21 +283,23 @@ function Header() {
         
 
         <div className='relative'>
-        <Link to="/Login">
+        
         {!user && (
                 <motion.p 
                 initial = {{opacity:0, x: 200 }} 
                 animate = {{opacity:1, x: 0 }} 
                 exit = {{opacity:0, x: 200 }} 
                 className='text-base text-red-100 hover:text-orange-500 duration-100 
-            transition-all ease-in-out cursor-pointer flex gap-0'  whileTap={{ scale : 0.6 }}>Login <MdLogin 
-            initial = {{opacity:0, x: 200 }} 
-            animate = {{opacity:1, x: 0 }} 
-            exit = {{opacity:0, x: 200 }} 
-
-            className='mt-1 mr-8'/></motion.p> 
+                transition-all ease-in-out cursor-pointer flex gap-0' onClick={toggleLoginPopup} whileTap={{ scale : 0.6 }}>
+                  Login <MdLogin 
+                initial = {{opacity:0, x: 200 }} 
+                animate = {{opacity:1, x: 0 }} 
+                exit = {{opacity:0, x: 200 }} 
+                className='mt-1'/>
+            
+              </motion.p> 
             )}
-          </Link>
+          
 
           {user && (
 
@@ -295,7 +326,7 @@ function Header() {
                 
                 className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0'>
 
-                {user && user.email === "uthayakumardilakshan@gmail.com" && (
+                {user && user.email === "opizzashop@gmail.com" && (
 
                     <Link to = {"/createItem"} >
                       <div className='flex mt-4 hover:bg-orange-500 hover:text-slate-100 duration-100
@@ -373,6 +404,13 @@ function Header() {
         </div> 
         
     </div>
+
+              {/* Button to toggle the login popup */}
+     <button onClick={toggleLoginPopup}></button>
+
+              {/* Render the Login component conditionally */}
+      {isOpenPopup && <Login closePopup={closePopup} />}
+
 </div>
   )
 }
