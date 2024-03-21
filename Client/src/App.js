@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  
-  CardContainer, Login, ContactUs, Customization, Header } from "./components";
+  CardContainer, ContactUs, Customization, Header } from "./components";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { useStateValue } from "./context/StateProvider";
@@ -33,12 +33,12 @@ function App() {
     
     <AnimatePresence mode="wait">
 
-        <div className="w-screen h-auto flex flex-col">
+        <div className="w-full h-auto flex flex-col">
           <Header />
 
-          <main className="mt-14 md:mt-20 w-screen">
+          <main className="w-full">
             <Routes>
-              <Route path= "/Login" element = {<Login/>} />
+              
               <Route path="/" element={<HomeContainer/>}/>
               <Route path = "/Customization" element = {<Customization />} />
               <Route path="/createItem" element={<CreateContainer/>}/>

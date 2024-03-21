@@ -91,9 +91,11 @@ const CreateContainer = () => {
   const handlePriceChange = (e) => {
     const inputValue = e.target.value;
 
-    const isValidInteger = /^\d+$/.test(inputValue);
+    const isValidFloat = /^\d*\.?\d*$/.test(inputValue);
 
-    if (isValidInteger || inputValue === "") {
+
+
+    if (isValidFloat || inputValue === "") {
       setPrice(inputValue);
       setIsPriceValid(true);
     } else {
@@ -152,7 +154,7 @@ const CreateContainer = () => {
     setTitle("");
     setImageAsset(null);
     setPrice("");
-    setCategory("Select Category");
+    setCategory("Select Category Here");
   };
 
   const fetchData = async () => {
@@ -186,6 +188,8 @@ const CreateContainer = () => {
               
           )
         }
+
+
         <div className='w-full py-2 border-b border-gray-300 flex
         items-center gap-2'>
           
@@ -194,7 +198,7 @@ const CreateContainer = () => {
           type = 'text' 
           required value={title} 
           onChange={(e) => setTitle(e.target.value)}
-          placeholder='Give me a title...' 
+          placeholder='Give a name for the food...' 
           className='w-full h-full text-lg bg-transparent 
           outline-none border-none placeholder:text-gray-400'
           />
@@ -204,9 +208,9 @@ const CreateContainer = () => {
          <div className='flex items-center gap-2' >
           <select onChange={(e)=>setCategory(e.target.value)} className='outline-none w-full text-base border-b-2 
           border-gray-200 p-2 rounded-md cursor-pointer'>
-            <option value="other" className='bg-white'>Select Category</option>
+            <option value="other" className='bg-white'>Select Category here</option>
             {categories && categories.map(item => (
-              <option key={item.id} className='text-base border-0 outline-none capitalize bg-white text-headingColor'
+              <option key={item.id} className='text-base outline-none capitalize bg-orange-100 text-emerald-900'
               value={item.urlParamName}>
                 {item.name}
               </option>
@@ -217,7 +221,7 @@ const CreateContainer = () => {
 
               <motion.button whileTap={{ scale: 0.6 }}
                 type="button"
-                className="border-none bg-cartNumBg px-2 hover:bg-black py-1 rounded-2xl
+                className="border-none bg-cartNumBg px-2 hover:bg-black py-1 rounded-lg
                 transition-all ease-in-out text-white md:ml-8 md:text-base text-sm"
                 onClick={() => Navigate('/EditCategory')}>
                 Edit Category
@@ -281,7 +285,7 @@ const CreateContainer = () => {
           <motion.button whileTap={{scale : 0.6}}
               type='button'
               className='ml-0 md:ml-auto w-full md:w-auto border-none outline-none
-               bg-emerald-600 px-12 py-2 hover:bg-emerald-900 rounded-2xl text-lg text-white font-semibold'
+               bg-pink-600 px-12 py-2 hover:bg-pink-900 rounded-2xl text-lg text-white font-semibold'
               onClick={saveDetails}> Save
           </motion.button>
         </div>
