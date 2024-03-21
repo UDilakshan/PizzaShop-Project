@@ -11,7 +11,7 @@ function HomeContainer() {
    useEffect (()=> {},[cartShow]);
 
   return (
-    <div className='mt-24'>
+    <div className='md:mt-8 mt-12 '>
 
        <NewUpdates/>
        <CategoryContainer />
@@ -23,4 +23,5 @@ function HomeContainer() {
 }
 
 export default HomeContainer
+
 

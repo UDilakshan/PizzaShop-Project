@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa'; 
-import About from "../images/OtherImages/About.gif";
+import About from "../images/About.gif";
 
 const AboutUs = () => {
   return (

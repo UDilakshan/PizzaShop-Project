@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, 
-GoogleAuthProvider, onAuthStateChanged, sendEmailVerification, updateProfile } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { app, storage } from '../firebase.config';
 import { validateUserJWTToken } from '../api';
 import { sendPasswordResetEmail } from 'firebase/auth';
+import { fadeInOut } from '../animation';
 import { useStateValue } from '../context/StateProvider';
-
-import loginbg from "../images/OtherImages/loginbg.jpg";
 import { actionType } from '../context/reducer';
 import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
-import{ FcGoogle} from "react-icons/fc";
-import { FaTimes,FaEnvelope } from 'react-icons/fa';
+import { FaEnvelope, FcGoogle } from '../asserts/icons';
+import { buttonClick } from '../animation';
 import { MD5 } from 'crypto-js'; 
 
 const LoginInput = ({ placeHolder, icon, inputState, inputStateFun, type, isSignUp }) => {
@@ -20,11 +18,9 @@ const LoginInput = ({ placeHolder, icon, inputState, inputStateFun, type, isSign
 
   return (
     <motion.div
-    initial = {{opacity:0, x: 200 }} 
-    animate = {{opacity:1, x: 0 }} 
-    exit = {{opacity:0, x: 200 }}
-      className={`flex f items-center justify-center gap-1 bg-red-600  backdrop-blur-18
-   rounded-md w-full px-1 py-2 ${isFocus ? 'shadow-md shadow-red-900 ' : 'shadow-none' }`}>
+      {...fadeInOut}
+      className={`flex f items-center justify-center gap-4 bg-slate-100  backdrop-blur-md 
+   rounded-md w-full px-4 py-2 ${isFocus ? 'shadow-md shadow-red-600 ' : 'shadow-none' }`}>
       {icon}
       <input
         type={type}
@@ -39,8 +35,7 @@ const LoginInput = ({ placeHolder, icon, inputState, inputStateFun, type, isSign
   );
 };
 
-const Login = ({ closePopup }) => { // Add closePopup prop
-
+const Login = () => {
   const [userEmail, setUserEmail] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [password, setPassword] = useState('');
@@ -48,21 +43,15 @@ const Login = ({ closePopup }) => { // Add closePopup prop
   const [showVerifyMessage, setShowVerifyMessage] = useState(false);
   const [{ user }, dispatch] = useStateValue();
 
-  const[isOpenPopup,setIsOpenPopup]=useState(false);
   const firebaseAuth = getAuth(app);
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
-  const [showLogin, setShowLogin] = useState(false);
-
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   const loginWithGoogle = async () => {
     try {
       // Sign out the user if already signed in
       await firebaseAuth.signOut();
-      
+  
       // Sign in with Google
       const userCred = await signInWithPopup(firebaseAuth, provider);
   
@@ -77,7 +66,6 @@ const Login = ({ closePopup }) => { // Add closePopup prop
   
         // Navigate to the main page
         navigate('/', { replace: true });
-        closePopup(); 
       }
     } catch (error) {
       console.error('Error during Google sign-in:', error);
@@ -96,23 +84,12 @@ const Login = ({ closePopup }) => { // Add closePopup prop
   const isValidPassword = (password) => {
     // Minimum length of 6 characters
     if (password.length !== 6) {
-      setPasswordError('Password must be exactly 6 characters.');
       return false;
     }
-    // Check if the password contains only numbers and alphabets.
-    const regex = /^[a-zA-Z0-9]+$/;
-    if (!regex.test(password)) {
-      // Display alert for invalid password characters
-      window.alert('Password can only contain numbers and alphabets.');
-      return false;
-    }
-    return true;
-  };
 
-  const isValidEmail = (email) => {
-    // Regular expression for email validation
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+    // Check if the password contains only numbers, alphabets, and the specified special characters
+    const regex = /^[a-zA-Z0-9@$#%^&*]+$/;
+    return regex.test(password);
   };
 
   const handleSuccessfulSignup = async (user) => {
@@ -124,7 +101,7 @@ const Login = ({ closePopup }) => { // Add closePopup prop
       await sendVerificationEmail(user);
   
       // Provide feedback to the user
-      window.alert('Verification email sent successfully');
+      console.log('Verification email sent successfully');
   
       // Check if email is verified
       if (user.emailVerified) {
@@ -140,8 +117,7 @@ const Login = ({ closePopup }) => { // Add closePopup prop
       } else {
         // Email is not verified, use default profile (avatar)
         // Optionally, you can show a message to the user about email verification
-       // Email is not verified, display an alert message
-       window.alert('Email is not verified');
+        console.log('Email verification is pending. Please verify your email.');
       }
     } catch (error) {
       console.error('Error during successful signup:', error);
@@ -149,34 +125,20 @@ const Login = ({ closePopup }) => { // Add closePopup prop
   };
   
   const signUpWithEmailPass = async () => {
-    setEmailError('');
-    setPasswordError('');
-    setConfirmPasswordError('');
-  
-    if (userEmail === '' || password === '' || confirm_password === '') {
-      window.alert('Please fill in all fields.');
-      return;
-    }
-  
-    // Validate email
-    if (!isValidEmail(userEmail)) {
-      setEmailError('Please enter a valid email address.');
-      return;
-    }
-  
-    // Validate password
-    if (!isValidPassword(password)) {
-      setPasswordError('Password must be exactly 6 characters.');
-      return;
-    }
-  
-    // Check if password and confirmPassword match
-    if (password !== confirm_password) {
-      setConfirmPasswordError('Password and Confirm Password do not match.');
-      return;
-    }
     try {
-      
+      // Validate input fields
+      if (userEmail === '' || password === '' || confirm_password === '') {
+        // Handle empty fields
+        console.log('Please fill in all fields.');
+        return;
+      }
+  
+      if (!isValidPassword(password)) {
+        // Handle invalid password
+        console.log('Password must be exactly 6 characters and can only contain numbers, special characters, and alphabets.');
+        return;
+      }
+  
       // Create user (even if email is already in use)
       const userCred = await createUserWithEmailAndPassword(firebaseAuth, userEmail, password);
   
@@ -186,8 +148,8 @@ const Login = ({ closePopup }) => { // Add closePopup prop
       // Send verification email
       await sendVerificationEmail(userCred.user);
   
-       // Provide feedback to the user
-       window.alert('Verification email sent successfully');
+      // Provide feedback to the user
+      console.log('Verification email sent successfully');
   
       // Check if email is verified
       if (userCred.user.emailVerified) {
@@ -197,14 +159,13 @@ const Login = ({ closePopup }) => { // Add closePopup prop
           displayName: 'Your Display Name',
           photoURL: newAvatarURL,
         });
+  
         // Navigate to the main page
         navigate('/', { replace: true });
-        closePopup();
       } else {
         // Email is not verified, use default profile (avatar)
         // Optionally, you can show a message to the user about email verification
-       // If email is not verified, prompt the user to verify their email
-       window.alert("Please verify your email to complete the registration process.");
+        console.log('Email verification is pending. Please verify your email.');
       }
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
@@ -242,35 +203,26 @@ const signInWithEmailPass = async () => {
 
         // Navigate to the main page
         navigate('/', { replace: true });
-        closePopup();
       } else {
-        // If email is not verified, display a message to the user
-          window.alert('Please verify your email before signing in.');
+        // Provide feedback to the user
+        console.log('Email is not yet verified. pls verify');
       }
     } catch (error) {
-      // Check if error is due to wrong password
-      if (error.code === 'auth/wrong-password') {
-       window.alert('Invalid email or password. Please try again.');
-   } else {
-       // For other errors, log them to console
-       console.error('Error during sign in:', error);
-      // window.alert("Account has been temporarily disabled due to many failed login attempts. Press forgot_password  to reset your password");
-   }
-   
-   }
+      console.error('Error during sign in:', error);
+    }
   }
 };
     const resetPassword = async () => {
       if (userEmail === '') {
         // Handle empty email field
-        window.alert('Please provide your email to reset the password.');
+        console.log('Please provide your email to reset the password.');
         return;
       }
 
       try {
         // Send password reset email
         await sendPasswordResetEmail(firebaseAuth, userEmail);
-        window.alert('Password reset email sent successfully. Check your email inbox.');
+        console.log('Password reset email sent successfully. Check your email inbox.');
 
         // Provide feedback to the user
         setShowVerifyMessage(true);
@@ -283,37 +235,22 @@ const signInWithEmailPass = async () => {
 
     return (
 
-      <div className='fixed inset-0 z-50 flex items-center justify-center backdrop-filter backdrop-blur-55 bg-opacity-50 bg-black'>
+     <div className='w-screen h-screen items-center justify-center relative overflow-hidden flex' style={{ backgroundColor: '#f0f0f0' }}>
+      <div className='flex flex-col items-center bg-blue-400 w-full p-2 px-4 py-10 rounded-md md:w-3/5 lg:w-2/4 xl:w-1/3 md:h-[70vh] lg:h-[80vh] xl:h-80vh]'>
           
-      <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', duration: 0.5 }}>
-          <div className='flex flex-col md:flex-row w-[100vw] md:w-[800px] h-[556px] z-10  relative'>
-              {/* Left side (Pizza Image) */}
-              
-            <div className='relative w-full md:w-1/2 overflow-hidden'>
-                <img src={loginbg} alt='Pizza' className='w-full h-full object-cover' />
-            </div>
+          {/*welcome txt*/}
+          
+          <p className=' text-3xl font-bold text-red-600  items-centerjustify-center '>Welcome Back </p>
+          
 
-              {/* Right side (Login Details) */}
-              <div className='flex flex-col items-center justify-center md:w-1/2 p-4 md:p-8 bg-blend-hard-light bg-white  backdrop-filter  relative'>
-        
-                 {/*welcome txt*/}
-          
-                 <p className='text-3xl font-semibold  text-orange-500 mt-2 px-10'> {isSignUp ? "Sign up":"Sign in"} to O'PIZZA </p>
-          
-          {/*input section*/}
-          <div className='w-full  flex flex-col items-center justify-center gap-4 px-4 md:px-7 py-5'>
+          <div className='w-full flex flex-col items-center justify-center gap-6 px-4 md:px-12 py-4'>
               <LoginInput 
               placeHolder={"Email here"}
-               icon={<FaEnvelope className='text-xl text-textColor'>  </FaEnvelope> }
+               icon={<FaEnvelope className='text-2xl text-textColor'>  </FaEnvelope> }
                inputState={userEmail} 
                inputStateFun={setUserEmail}
                type="email"
                isSignUp={isSignUp} /> 
-
-            {emailError && (
-                <p className="text-green-800 text-sm">{emailError}</p>
-              )}
-
 
 
             {!isSignUp && (
@@ -328,8 +265,8 @@ const signInWithEmailPass = async () => {
               />
 
                 <motion.p
-                whileTap={{scale:0.8}}
-                className='text-blue-800 font-medium text-xl underline cursor-pointer bg-transparent'
+                {...buttonClick}
+                className='text-blue-200 font-medium text-xl underline cursor-pointer bg-transparent'
                 onClick={() => resetPassword()}
               >
                 Forgot_Password?
@@ -347,12 +284,10 @@ const signInWithEmailPass = async () => {
                 type="password"
                 isSignUp={isSignUp}
               />
-            {passwordError && (
-             <p className="text-green-800 text-sm">{passwordError}</p>
-              )}
+
               <LoginInput
                 placeHolder="Confirm_Password here"
-                icon={<FaEnvelope className='text-xl text-textColor'></FaEnvelope>}
+                icon={<FaEnvelope className='text-2xl text-textColor'></FaEnvelope>}
                 inputState={confirm_password}
                 inputStateFun={setConfirm_password}
                 type="password"
@@ -360,26 +295,21 @@ const signInWithEmailPass = async () => {
               />
             </>
           )}
-
-              {confirmPasswordError && (
-                      <p className="text-green-800 text-sm">{confirmPasswordError}</p>
-              )}
-
               {!isSignUp ? (
-              <p style={{color:'black',fontSize:'20px' }} >  Doesn't have an account  :{" "}
+              <p style={{color:'Window',fontSize:'20px' }} >  Doesn't have an account  :{" "}
               <motion.button
-               whileTap={{scale:0.8}}
-               className="text-blue-800 font-medium text-xl underline cursor-pointer bg-transparent"
+               {...buttonClick}
+               className="text-black font-medium text-xl underline cursor-pointer bg-transparent"
               onClick={()=> setIsSignUp(true)}>
                 Create one
                 </motion.button>
                </p>
                ):
                ( 
-                <p style={{color:'black',fontSize:'20px' }}>  Already  have an account :{" "}
+                <p style={{color:'whitesmoke',fontSize:'20px' }}>  Already  have an account :{" "}
                <motion.button
-                whileTap={{scale:0.8}}
-                 className= "text-blue-800 font-medium text-xl  underline cursor-pointer bg-transparent"
+                {...buttonClick} 
+                 className= "text-black font-medium text-xl  underline cursor-pointer bg-transparent"
                  onClick={()=> setIsSignUp(false)}>
                  sign-in here
                  </motion.button>
@@ -387,44 +317,38 @@ const signInWithEmailPass = async () => {
                )}
           {/* button section*/}  
           {isSignUp ?(
-          <motion.button whileTap={{scale:0.8}} className='w-full px-4 py-2  rounded-md bg-red-600
-          cursor-pointer text-white text-xl font-medium hover:bg-red-700 transition-all duration-150'
+          <motion.button {...buttonClick} className='w-full px-4 py-2  rounded-md bg-red-400
+          cursor-pointer text-white text-xl font-medium hover:bg-red-500 transition-all duration-150'
            onClick={signUpWithEmailPass}
            >
             Sign Up
           </motion.button>   
           ) :(
-            <motion.button whileTap={{scale:0.8}} className='w-full px-4 py-2  rounded-md bg-red-600
-           cursor-pointer text-white text-xl font-medium hover:bg-red-700 transition-all duration-150'
+            <motion.button {...buttonClick} className='w-full px-4 py-2  rounded-md bg-red-400
+           cursor-pointer text-white text-xl font-medium hover:bg-red-500 transition-all duration-150'
            onClick={signInWithEmailPass}
            >
             Sign in
           </motion.button>  )}
          </div>
           <div className='flex items-center justify-between gap-16'>
-            <div className='w-24 h-[1px] rounded-md bg-slate-400'> </div>
-            <p className='text-textcolor size-3'> or </p>
-            <div className='w-24 h-[1px] rounded-md bg-slate-400'> </div>
+            <div className='w-24 h-[1px] rounded-md bg-slate-50'> </div>
+            <p className='text-white size-3'> or </p>
+            <div className='w-24 h-[1px] rounded-md bg-slate-50'> </div>
           </div>
             <br></br>
-          <motion.div whileTap={{scale:0.8}} className='flex items-center justify-center px-22 py-1 bg-slate-600 
-           backdrop-blur-md cursor-pointer rounded-2xl gap-2'
+          <motion.div {...buttonClick} className='flex items-center justify-center px-20 py-2 bg-slate-50 
+           backdrop-blur-md cursor-pointer rounded-3xl gap-3'
            onClick={loginWithGoogle}>
-            <FcGoogle className='text-2xl'/>
-            <p className='text-xl font-semi-bold  text-white '> Sign in with Google </p>
+            <FcGoogle className='text-3xl'/>
+            <p className='text-xl font-semi-bold  text-black '> Sign in with Google </p>
           </motion.div>
-          </div>
-           
+           <div>
             {/* Render your component with the avatar */}
-             {/* Add a button to close the popup */}
-        <button className=' absolute top-4 right-4 text-black text-xl cursor-pointer z-50' onClick={closePopup}>
-          <FaTimes />
-        </button>
-       
-      </div>
-      </motion.div>
-      </div>
 
+        </div>
+      </div>
+      </div>
     )
   }
   export default Login;
