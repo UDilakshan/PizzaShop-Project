@@ -33,10 +33,10 @@ function App() {
     
     <AnimatePresence mode="wait">
 
-        <div className="w-full h-auto flex flex-col">
+        <div className="w-full h-auto flex">
           <Header />
 
-          <main className="w-full">
+          <main className="w-screen">
             <Routes>
               
               <Route path="/" element={<HomeContainer/>}/>
@@ -47,6 +47,7 @@ function App() {
               <Route path = "/CardContainer" element = {<CardContainer/>}/>
               <Route path = "/MenuContainer" element = {<MenuContainer/>} />
               <Route path="/EditCategory" element={<EditCategory />} />
+
             </Routes>
           </main>
       </div>
