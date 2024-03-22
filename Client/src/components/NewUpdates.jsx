@@ -5,12 +5,13 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 
-import Bn2 from "../images/OtherImages/temp2.png"
-import Bn1 from "../images/OtherImages/loginbg.jpg"
-import Bn3 from "../images/OtherImages/OIP.jpg";
+import Bn1 from "../images/ShowCaseImages/Pizza1.gif";
+import Bn2 from "../images/ShowCaseImages/Pizza2.png";
+import Bn3 from "../images/ShowCaseImages/Pizza3.png";
+import Bn4 from "../images/ShowCaseImages/Pizza4.png";
 
 
-const pizzaImages = [Bn2, Bn1, Bn2, Bn3];
+const pizzaImages = [Bn1,Bn2,Bn3,Bn4];
 
 
 function SampleNextArrow(props) {
@@ -84,7 +85,7 @@ function NewUpdates() {
                           <img src={image} alt="Pizza Images" className='h-24 max-h-24 w-auto md:w-auto md:h-[300px] md:max-h-[300px] flex items-center justify-center cursor-pointer'/>
                       </motion.div>
                   </>            
-                ))}
+                ))} 
                 </Slider>
         </div>
     </div>    
