@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  
-  CardContainer, ContactUs, Customization, Header } from "./components";
+  CardContainer, ContactUs, Customization, Header, Offers } from "./components";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { useStateValue } from "./context/StateProvider";
@@ -47,6 +47,7 @@ function App() {
               <Route path = "/CardContainer" element = {<CardContainer/>}/>
               <Route path = "/MenuContainer" element = {<MenuContainer/>} />
               <Route path="/EditCategory" element={<EditCategory />} />
+              <Route path="/Offers" element={<Offers />} />
 
             </Routes>
           </main>

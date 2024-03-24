@@ -16,10 +16,10 @@ import {
   
 
   //get all food items
-  export const getAllFoodItems = async () => {
+   export const getAllFoodItems = async () => {
     const items = await getDocs(
-      query(collection(firestore, "foodItems"), orderBy("id", "desc"))
+      query(collection(firestore, "foodItems"), orderBy("id", "asc"))
     );
   
     return items.docs.map((doc) => doc.data());
-  };
+  }; 

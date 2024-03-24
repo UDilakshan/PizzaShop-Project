@@ -72,7 +72,7 @@ export const categoryData = [
 ]
 
 export const categoryData2 = [
-  {  id: 1, name: "Categories", urlParamName: "Categories",}
+  {  id: 1, name: "Category", urlParamName: "Category",}
 ]
 
 export const VegPizzaData = [
