@@ -1,33 +1,54 @@
-import React from "react";
-import Header from "./components/Header";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { CreateContainer, MainContainer, MenuContainer } from "./components";
+import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  
+  CardContainer, ContactUs, Customization, Header, Offers } from "./components";
 
-import EditCategory from "./components/EditCategory";
 import { BrowserRouter as Router } from "react-router-dom";
-import Aboutus from "./Container/Aboutus";
-import Service from "./Container/Service";
-import Carditem from "./Container/Cartitem";
+import { useStateValue } from "./context/StateProvider";
+import { getAllFoodItems } from "./utils/firebaseFunctions";
+import { actionType } from "./context/reducer";
 
 
 function App() {
+ 
+  const [{foodItems}, dispatch] = useStateValue();
+  
+  const fetchData = async () => {
+    await getAllFoodItems() .then((data) => {
+      dispatch({
+        type : actionType.SET_FOOD_ITEMS,
+        foodItems : data,
+      });
+    });
+  };
+
+  useEffect(()=>{
+    fetchData();
+  },[]);
+   
+
+
   return (
     
-    <AnimatePresence mode='wait'>
+    <AnimatePresence mode="wait">
 
-        <div className="w-screen h-auto flex flex-col">
+        <div className="w-full h-auto flex">
           <Header />
 
-          <main className="mt-14 md:mt-20 w-screen">
+          <main className="w-screen">
             <Routes>
-              <Route path="/" element={<MainContainer/>}/>
+              
+              <Route path="/" element={<HomeContainer/>}/>
+              <Route path = "/Customization" element = {<Customization />} />
               <Route path="/createItem" element={<CreateContainer/>}/>
-              <Route path = "/Aboutus" element = {<Aboutus />} />
-              <Route path = "/Service" element = {<Service/>} />
-              <Route path = "/Carditem" element = {<Carditem/>} />
+              <Route path = "/AboutUs" element = {<AboutUs />} />
+              <Route path = "/ContactUs" element = {<ContactUs/>} />
+              <Route path = "/CardContainer" element = {<CardContainer/>}/>
               <Route path = "/MenuContainer" element = {<MenuContainer/>} />
               <Route path="/EditCategory" element={<EditCategory />} />
+              <Route path="/Offers" element={<Offers />} />
+
             </Routes>
           </main>
       </div>
