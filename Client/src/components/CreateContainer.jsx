@@ -6,7 +6,7 @@ import {
   MdCloudUpload, 
   MdDelete,  
   MdAttachMoney } from 'react-icons/md';
-import { categories } from '../utils/data';
+import { categories } from '../utils/data'; 
 import Loader from '../components/Loader';
 import { storage } from '../firebase.config';
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";

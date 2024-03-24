@@ -14,8 +14,9 @@ function HomeContainer() {
     <div className='mt-28 w-full'>
 
        <NewUpdates/>
+       {/* <MenuContainer /> */}
        <CategoryContainer />
-       <MenuContainer /> 
+        
        {cartShow && (<CardContainter/>)} 
 
     </div>

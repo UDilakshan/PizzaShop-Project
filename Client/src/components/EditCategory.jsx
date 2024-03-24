@@ -148,7 +148,7 @@ const EditCategory = () => {
   return (
     <div className='w-full min-h-screen flex items-center justify-center bg-red-600'>
       <div className='w-[90%] md:w-[75%] border border-gray-300 bg-gray-100 rounded-lg p-4 flex flex-col 
-      items-center justify-center gap-4'>
+      items-center justify-center gap-4 mt-24'>
         {
           fields && (
             <motion.p 
@@ -186,7 +186,7 @@ const EditCategory = () => {
          <div className='flex items-center gap-2' >
           <select onChange={(e)=>setCategory(e.target.value)} className='outline-none w-full text-base border-b-2 
           border-gray-200 p-2 rounded-md cursor-pointer'>
-            <option value="other" className='bg-white'>Category</option>
+            <option value="other" className='bg-white'>Select</option>
             {categoryData2 && categoryData2.map(item => (
               <option key={item.id} className='text-base border-0 outline-none capitalize bg-white text-headingColor'
               value={item.urlParamName}>

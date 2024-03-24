@@ -82,7 +82,8 @@ function NewUpdates() {
                   <>
                       {/* for images  */}
                       <motion.div key={index} className='w-auto flex items-center justify-center'>
-                          <img src={image} alt="Pizza Images" className='h-24 max-h-24 w-auto md:w-auto md:h-[300px] md:max-h-[300px] flex items-center justify-center cursor-pointer'/>
+                          <img src={image} alt="Pizza Images" className='h-24 max-h-24 w-auto md:w-auto md:h-[300px] md:max-h-[300px] flex items-center justify-center cursor-pointer' onClick={() => navigate('/offers')} whileTap={{scale:0.9}}/>
+                          
                       </motion.div>
                   </>            
                 ))} 
