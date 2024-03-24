@@ -13,5 +13,4 @@ export {default as CardContainer} from '../Container/CardContainter';
 export {default as ContactUs} from '../Container/ContactUs';
 export { default as Header} from "../Container/Header";
 export {default as HomeContainer} from "../Container/HomeContainer";
-export {default as Login} from "../Container/Login";
 export {default as MenuContainer} from "../Container/MenuContainer";
