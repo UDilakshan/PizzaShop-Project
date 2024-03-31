@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MdShoppingBasket, MdAdd, MdLogin, MdLogout  } from "react-icons/md";
+import {MdShoppingBasket, MdAdd, MdLogin, MdLogout,MdShowChart  } from "react-icons/md";
+import { FaBasketShopping } from "react-icons/fa6";
 import { IoHome } from "react-icons/io5";
 import { RiContactsBook2Fill } from "react-icons/ri";
 import { VscNewFile } from "react-icons/vsc";
@@ -13,6 +14,7 @@ import { Link, useNavigate  } from "react-router-dom";
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
 import Login from '../Container/Login';
+import CardContainter from './CardContainter';
 import {MD5} from 'crypto-js';
 
 
@@ -20,7 +22,7 @@ import {MD5} from 'crypto-js';
 function Header() {
   
     const firebaseAuth = getAuth(app);
-    const [{user}, dispatch] = useStateValue();
+    const [{user,cartItems,cartShow}, dispatch] = useStateValue();
     const [isMenu, setIsMenu] = useState(false);
     const [isOpenPopup, setIsOpenPopup] = useState(false);
     const navigate = useNavigate();
@@ -105,7 +107,14 @@ function Header() {
         
     };
 
+    const showCart = ()=>{
+      dispatch({
+        type: actionType.SET_CART_SHOW,
+        cartShow: !cartShow
+      })
+    }
 
+    useEffect (()=>{},[cartShow]);
 
   return (
     <div className='fixed z-50 w-screen h-24 p-3 px-4 md:p-6 md:px-16 cursor-pointer bg-black'>
@@ -137,7 +146,7 @@ function Header() {
                  </motion.li>
               </Link>
 
-            <Link to='/MenuContainer'>
+            <Link to={'/FullMenuContainer'}>
             <motion.li whileTap={{scale:1.3}}>
                       <div className='flex gap-1 text-base text-red-100 hover:text-orange-500 duration-100 
                                         transition-all ease-in-out cursor-pointer'>
@@ -168,19 +177,24 @@ function Header() {
               </Link>
         </motion.ul>
 
-        <Link to="/CardContainer">
-          <motion.div
-          initial = {{opacity:0, x: 200 }} 
-          animate = {{opacity:1, x: 0 }} 
-          exit = {{opacity:0, x: 200 }}
-          
-          className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
-        <MdShoppingBasket className='text-red-100 text-2xl cursor-pointer' />
-        <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center'>
-            <p className='text-xs text-white font-semibold'>2</p>
-        </div>
-          </motion.div>
-        </Link>
+
+        <motion.div
+              initial = {{opacity:0, x: 200 }} 
+              animate = {{opacity:1, x: 0 }} 
+              exit = {{opacity:0, x: 200 }}
+              
+              className='mb-2 relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
+            <FaBasketShopping className='text-red-100 text-2xl cursor-pointer' onClick={showCart} />
+            {
+              cartItems && cartItems.length==0 && (
+                <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center'>
+                  <p className='text-xs text-white font-semibold'>{cartItems.length}</p>
+                </div>
+              )
+            }
+        </motion.div>
+
+
 
 
             <div className='relative'>
@@ -250,20 +264,23 @@ function Header() {
         {/* mobile */}
       <div className='flex items-center justify-between md:hidden w-full h-full'>
         
-        <Link to="/CardContainer">
           <motion.div
+              initial = {{opacity:0, x: 200 }} 
+              animate = {{opacity:1, x: 0 }} 
+              exit = {{opacity:0, x: 200 }} 
+              
+              className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
+            <FaBasketShopping className='text-red-100 text-2xl cursor-pointer' onClick={showCart} />
+            {
+              cartItems && cartItems.length==0 && (
+                <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center'>
+                <p className='text-xs text-white font-semibold'>{cartItems.length}</p>
+            </div>
+              )
+            }
+        </motion.div>
 
-          initial = {{opacity:0, x: 200 }} 
-          animate = {{opacity:1, x: 0 }} 
-          exit = {{opacity:0, x: 200 }} 
-          
-          className='relative flex items-center justify-center' whileTap={{ scale: 0.7 }}>
-        <MdShoppingBasket className='text-red-100 text-2xl cursor-pointer' />
-        <div className='absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center'>
-            <p className='text-xs text-white font-semibold'>2</p>
-        </div>
-          </motion.div>
-        </Link>
+
 
 
         <Link to = {"/"} className='flex items-center gap-2'>
@@ -343,7 +360,7 @@ function Header() {
                  </motion.li>
               </Link>
 
-            <Link to ={"/MenuContainer"}>
+            <Link to ={"/FullMenuContainer"}>
                <motion.li whileTap={{scale:0.8}}>
                       <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
                        transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>
