@@ -56,7 +56,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-cyan-900 p-20">
+    <div className="flex items-center justify-center bg-cyan-900 p-20 mt-12">
       <form className="w-full max-w-lg bg-white rounded-lg p-8" onSubmit={handleSubmit}>
         <h2 className="text-2xl text-center font-semibold mb-6">FEEDBACK FORM</h2>
 
@@ -149,7 +149,7 @@ const ContactUs = () => {
 
         <div className="flex justify-center">
           <button
-            className="bg-red-600 hover:bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-pink-600 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
             Submit
