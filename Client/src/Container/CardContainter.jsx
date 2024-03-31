@@ -4,20 +4,20 @@ import { motion } from 'framer-motion';
 import { RiRefreshFill } from 'react-icons/ri';
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
-import emt from '../images/emt.png';
+import empty from '../images/emptii.jpg';
 
 const CardContainter = () => {
   const [{ cartShow,cartItems, user }, dispatch] = useStateValue();
   const [tot, setTot] = useState(0);
-  const [flag ] = useState(false);
+  const [flag, setFlag] = useState(false);
 
-  const showCart = ()=>{
+ const showCart = () => {
     dispatch({
-        type : actionType.SET_CART_SHOW,
-        cartShow: !cartShow,
-        });
+      type: actionType.SET_CART_SHOW,
+      cartShow: !cartShow,
+    });
   };
-  
+
   useEffect(() => {
     let totalPrice = cartItems.reduce(function (accumulator, item) {
       return accumulator + item.qty + item.qty * item.price;
@@ -39,11 +39,11 @@ const CardContainter = () => {
         initial={{ opacity: 0, x: 200 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 0 }}
-        className='fixed top-24 right-0 w-1/3  py-1 bg-gradient-to-r from-blue-500 to-purple-500 drop-shadow-md
-        flex flex-col  h-screen z-[101]'>
+        className='fixed top-24 right-0 w-1/3  py-1 bg-gradient-to-r from-gray-500 to-white-600 drop-shadow-md
+        flex flex-col  h-screen z-[101] '>
         <div className='w-full  flex items-center justify-between p-4 cursor-pointer bg-black gap-3'>
           <motion.div whileTap={{ scale: 0.8 }} onClick={showCart}>
-          <MdOutlineKeyboardBackspace className=' text-white text-2xl' />
+            <MdOutlineKeyboardBackspace className=' text-white text-2xl' />
           </motion.div>
           <p className='text-white text-lg font-semibold'> Card </p>
           <motion.p
@@ -57,17 +57,14 @@ const CardContainter = () => {
         </div>
 
         {/* bottom section */}
-        {cartItems&& cartItems.length > 0 ? (
+        {cartItems && cartItems.length > 0 ? (
           <div className='w-full h-full bg-cartBg rounded-t-[2rem] flex flex-col'>
             {/* Card items section */}
             <div  className='w-full h-340 max-h-36 px-5 py-8  flex flex-col gap-3 overflow-y-scroll
             scrollbar-none'>
-          {/* cart item*/}
-          {
-           cartItems.length 
-          }
-            {/* cart item */}
-            {cartItems.length &&
+          
+              {/* cart item */}
+              {cartItems.length &&
                 cartItems.map((item) => <cartItem key={item.id} data={item} />)}
             </div>
 
@@ -102,7 +99,7 @@ const CardContainter = () => {
                   text-gray-50 text-lg my-2
                   hover:shadow-lg '
                 >
-               Login to checkout
+
                 </motion.button>
               )}
             </div>
@@ -110,12 +107,12 @@ const CardContainter = () => {
         ) : (
           <div className='w-full h-full flex flex-col items-center justify-center gap-6'>
             <img
-              src={emt}
-              className='w-30 h-30 max-w-[250px] rounded-md object-contain'
+              src={empty}
+              className='w-30 h-30 max-w-[250px] rounded-full object-contain'
               alt='Empty Cart'
             />
             <p className='text-xl text-black font-semibold'>
-              Purcharge Now...!!
+              Add some items to your cart
             </p>
           </div>
         )}
@@ -124,3 +121,4 @@ const CardContainter = () => {
   );
 };
 export default CardContainter;
+
