@@ -31,7 +31,7 @@ const EditCategory = () => {
   const uploadImage = (e) => {
     setIsLoading(true);
     const imageFile = e.target.files[0];  //can upload only one image(zero index)
-    const storageRef = ref(storage, `Images/Category/${Date.now()}-${imageFile.name}`)
+    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`)
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
   uploadTask.on('state_changed', 
@@ -148,7 +148,7 @@ const EditCategory = () => {
   return (
     <div className='w-full min-h-screen flex items-center justify-center bg-red-600'>
       <div className='w-[90%] md:w-[75%] border border-gray-300 bg-gray-100 rounded-lg p-4 flex flex-col 
-      items-center justify-center gap-4 mt-24'>
+      items-center justify-center gap-4 mt-10'>
         {
           fields && (
             <motion.p 

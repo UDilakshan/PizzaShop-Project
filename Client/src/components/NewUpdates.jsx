@@ -51,18 +51,21 @@ function NewUpdates() {
     responsive: [
       {
         breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
+        settings: { 
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 0,
         }
       },
        
       {
         breakpoint: 640,
         settings: {
+          nextArrow: false , 
+          prevArrow: false ,
           slidesToShow: 1,
-          slidesToScroll: 1
+          slidesToScroll: 1,
+          initialSlide: 0
         }
       }
     ]
@@ -74,7 +77,7 @@ function NewUpdates() {
   return(
     <>
     <div className='flex flex-row'>
-      <div className='md:w-[90%] md:h-[300px] w-60 h-24 ml-10 md:ml-14'>
+      <div className='md:w-[92%] md:h-[300px] w-full h-auto mx-auto '>
         <div>  
             <Slider {...settings}>
               {
@@ -82,7 +85,7 @@ function NewUpdates() {
                   <>
                       {/* for images  */}
                       <motion.div key={index} className='w-auto flex items-center justify-center'>
-                          <img src={image} alt="Pizza Images" className='h-24 max-h-24 w-auto md:w-auto md:h-[300px] md:max-h-[300px] flex items-center justify-center cursor-pointer' onClick={() => navigate('/offers')} whileTap={{scale:0.9}}/>
+                          <img src={image} alt="Pizza Images" className='h-auto max-h-24 w-auto md:w-auto md:h-[300px] md:max-h-[300px] flex items-center justify-center rounded-xl cursor-pointer' onClick={() => navigate('/offers')} whileTap={{scale:0.9}}/>
                           
                       </motion.div>
                   </>            
@@ -93,12 +96,7 @@ function NewUpdates() {
   </div>
             <div className='flex items-center justify-center w-full bg-black mt-2 md:mt-5 md:py-3 py-2'></div>
     </>
-  
-
-    
-  )
-
-}
+  )}
 
 
 export default NewUpdates;

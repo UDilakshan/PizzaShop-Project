@@ -6,37 +6,27 @@ import { VscNewFile } from "react-icons/vsc";
 import { FaCircleUser } from "react-icons/fa6";
 import { BiSolidFoodMenu } from "react-icons/bi";
 import { motion } from 'framer-motion';
-
-import { getAuth, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged} from "firebase/auth";
 import {app} from "../firebase.config";
-
-
 import Logo from "../images/OtherImages/Logo.png";
-
 import { Link, useNavigate  } from "react-router-dom";
-import { HashLink } from 'react-router-hash-link';
-
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
 import Login from '../Container/Login';
 import {MD5} from 'crypto-js';
 
 
+
 function Header() {
   
     const firebaseAuth = getAuth(app);
-
     const [{user}, dispatch] = useStateValue();
-
     const [isMenu, setIsMenu] = useState(false);
-
     const [isOpenPopup, setIsOpenPopup] = useState(false);
-
     const navigate = useNavigate();
     // State variable to hold the login button text
     //const [loginButtonText, setLoginButtonText] = useState(user ? user.email : 'Login');
 
-        
     const toggleLoginPopup = () => {
       if (window.location.pathname == '/') {
       setIsOpenPopup(!isOpenPopup);
