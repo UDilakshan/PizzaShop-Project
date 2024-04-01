@@ -16,6 +16,8 @@ html,body {
 
 .background{
   background-image: url("./images/OtherImages/MenuBg.jpg");
-  
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
 

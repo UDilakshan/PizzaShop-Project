@@ -53,6 +53,7 @@ module.exports = {
         cartNumBg: "#e80013",
         primary: "#f5f3f3",
         cardOverlay: "rgba(256,256,256,0.4)",
+        lightOverlay: "rgba(255,255,255,0.2)",
         lighttextGray: "#9ca0ab",
         card: "rgba(256,256,256,0.8)",
         cartBg: "#282a2c",
