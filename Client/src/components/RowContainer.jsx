@@ -50,8 +50,7 @@ import { useStateValue } from '../context/StateProvider';
         );
       } 
 
-const RowContainer = ({ flag,data }) => {
-  console.log(data);  
+const RowContainer = ({ flag,data }) => { 
   const [filter, setFilter] = useState("OPizza Offers");
   const [{foodItems}, dispatch] = useStateValue(); 
   

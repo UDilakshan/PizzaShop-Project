@@ -11,7 +11,7 @@ export {default as Offers} from "./Offers";
 
 
 export {default as AboutUs} from '../Container/AboutUs';
-export {default as CardContainer} from '../Container/CardContainter';
+export {default as CartContainter} from '../Container/CartContainter';
 export {default as ContactUs} from '../Container/ContactUs';
 export { default as Header} from "../Container/Header";
 export {default as HomeContainer} from "../Container/HomeContainer";

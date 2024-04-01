@@ -14,5 +14,8 @@ html,body {
   overflow-x: hidden;
 }
 
-
+.background{
+  background-image: url("./images/OtherImages/MenuBg.jpg");
+  
+}
 

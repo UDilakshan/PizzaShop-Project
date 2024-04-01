@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  
-  CardContainer, ContactUs, Customization, Header, Offers, FullMenuContainer } from "./components";
+  CartContainter, ContactUs, Customization, Header, Offers, FullMenuContainer } from "./components";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { useStateValue } from "./context/StateProvider";
@@ -44,7 +44,7 @@ function App() {
               <Route path="/createItem" element={<CreateContainer/>}/>
               <Route path = "/AboutUs" element = {<AboutUs />} />
               <Route path = "/ContactUs" element = {<ContactUs/>} />
-              <Route path = "/CardContainer" element = {<CardContainer/>}/>
+              <Route path = "/CartContainter" element = {<CartContainter/>}/>
               <Route path = "/MenuContainer" element = {<MenuContainer/>} />
               <Route path="FullMenuContainer" element = {<FullMenuContainer/>} />
               <Route path="/EditCategory" element={<EditCategory />} />

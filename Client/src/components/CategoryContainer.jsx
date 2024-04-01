@@ -5,7 +5,7 @@ import { useStateValue } from '../context/StateProvider'
 
 const CategoryContainer = () => {
 
-    const [{foodItems},dispatch] = useStateValue();   
+    const [{foodItems},dispatch] = useStateValue();  
   return (
         <section className='w-full mt-8 md:mt-24 h-auto'>
             <div className= "w-full flex items-center justify-center md:justify-between">

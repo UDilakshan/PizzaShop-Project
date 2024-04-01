@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {MdShoppingBasket, MdAdd, MdLogin, MdLogout,MdShowChart  } from "react-icons/md";
+import { MdAdd, MdLogin, MdLogout,MdShowChart  } from "react-icons/md";
 import { FaBasketShopping } from "react-icons/fa6";
 import { IoHome } from "react-icons/io5";
 import { RiContactsBook2Fill } from "react-icons/ri";
@@ -14,7 +14,7 @@ import { Link, useNavigate  } from "react-router-dom";
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
 import Login from '../Container/Login';
-import CardContainter from './CardContainter';
+import CartContainter from './CartContainter';
 import {MD5} from 'crypto-js';
 
 
