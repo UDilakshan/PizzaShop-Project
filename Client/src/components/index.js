@@ -16,3 +16,4 @@ export {default as ContactUs} from '../Container/ContactUs';
 export { default as Header} from "../Container/Header";
 export {default as HomeContainer} from "../Container/HomeContainer";
 export {default as MenuContainer} from "../Container/MenuContainer";
+export {default as FullMenuContainer} from "../Container/FullMenuContainer";
