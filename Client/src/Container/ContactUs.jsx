@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { contact_types } from '../utils/data';
+import { collection, addDoc } from "firebase/firestore";
+import { firestore } from "../firebase.config"; 
 
 const ContactUs = () => {
-  // Define state variables for form fields
+
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -13,26 +15,37 @@ const ContactUs = () => {
 
   const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Check if all details are filled correctly
     if (fname && lname && email && phone && message && !emailError) {
-      console.log("Form submitted!");
-      console.log("First Name:", fname);
-      console.log("Last Name:", lname);
-      console.log("Email:", email);
-      console.log("Phone:", phone);
-      console.log("Message:", message);
-      
-      // Reset form fields and show success message
-      setFname("");
-      setLname("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      setEmailError("");
-      setFormSubmitted(true);
+      try {
+        // Save feedback data to Firestore
+        const feedbackRef = collection(firestore, "feedback");
+        await addDoc(feedbackRef, {
+          firstName: fname,
+          lastName: lname,
+          email,
+          phone,
+          message,
+        });
+
+        // Reset form fields and show success message
+        setFname("");
+        setLname("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
+        setEmailError("");
+        setFormSubmitted(true);
+
+        console.log("Feedback submitted successfully!");
+      } catch (error) {
+        console.error("Error adding feedback: ", error);
+        // Show error message if there's an error saving the feedback
+        setFormSubmitted(false);
+      }
     } else {
       // Show error message if details are not filled correctly
       setFormSubmitted(false);
@@ -54,7 +67,7 @@ const ContactUs = () => {
       setEmailError("");
     }
   };
-
+  
   return (
     <div className="flex items-center justify-center bg-cyan-900 p-20 mt-12">
       <form className="w-full max-w-lg bg-white rounded-lg p-8" onSubmit={handleSubmit}>
