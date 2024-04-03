@@ -56,7 +56,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-cyan-900 p-20 mt-12">
+    <div className="flex items-center justify-center bg-cyan-900 p-20 mt-12 pb-40">
       <form className="w-full max-w-lg bg-white rounded-lg p-8" onSubmit={handleSubmit}>
         <h2 className="text-2xl text-center font-semibold mb-6">FEEDBACK FORM</h2>
 

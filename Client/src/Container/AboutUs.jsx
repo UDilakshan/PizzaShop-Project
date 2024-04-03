@@ -4,7 +4,7 @@ import About from "../images/OtherImages/About.gif";
 
 const AboutUs = () => {
   return (
-    <div className="flex items-center justify-center bg-cyan-700 py-20">
+    <div className="flex items-center justify-center bg-cyan-700 py-20 pb-40">
       <div className="max-w-4xl px-8 py-12 bg-white rounded-lg shadow-lg">
         <h2 className="text-3xl text-center font-semibold mb-6">Welcome to O'Pizza</h2>
         <div className="flex justify-center mb-8">

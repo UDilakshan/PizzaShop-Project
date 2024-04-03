@@ -11,7 +11,7 @@ function HomeContainer() {
    useEffect (()=> {},[cartShow]);
 
   return (
-    <div className='mt-28 w-full'>
+    <div className='mt-28 w-full pb-40'>
 
        <NewUpdates/>
        <CategoryContainer />
