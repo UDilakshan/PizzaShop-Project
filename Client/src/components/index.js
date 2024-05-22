@@ -7,6 +7,8 @@ export {default as Loader} from './Loader';
 export {default as NewUpdates} from "./NewUpdates";
 export {default as RowContainer} from "./RowContainer";
 export {default as Offers} from "./Offers";
+export {default as Dashboard} from "./Dashboard";
+
 
 
 

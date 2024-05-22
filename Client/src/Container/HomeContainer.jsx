@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import NewUpdates from '../components/NewUpdates';
-import MenuContainer from './MenuContainer';
 import { useStateValue } from '../context/StateProvider';
 import CartContainter from './CartContainter';
 import CategoryContainer from '../components/CategoryContainer';
@@ -15,7 +14,6 @@ function HomeContainer() {
 
        <NewUpdates/>
        <CategoryContainer />
-        {/* <MenuContainer /> */}
        {cartShow && (<CartContainter/>)} 
 
     </div>

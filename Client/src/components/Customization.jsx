@@ -1,9 +1,222 @@
-import React from 'react'
 
-const Customization = () => {
+/* Used for customize the size and extra things of the product */
+
+
+import React, { useState } from 'react';
+import { IoIosCloseCircle } from "react-icons/io";
+import { motion } from "framer-motion";
+import { GiFullPizza } from "react-icons/gi";
+import { PiShoppingCartBold } from "react-icons/pi";
+
+const Customization = ({ visible, onClose, data }) => {
+  const [price, setPrice] = useState("0.00");
+  const [optionView, setOptionView] = useState(false);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [cheeseShow, setCheeseShow] = useState(false);
+  const [cheeseAdded, setCheeseAdded] = useState(false);
+  const [totalPrice, setTotalPrice] = useState("0.00");
+
+  const handleClose = (e) => {
+    if (e.target.id === 'outOfBorder') onClose();
+  };
+
+
+  let cheese = "100.00";
+
+  const handleSizeClick = (e, newSize, newPrice) => { 
+    if (selectedSize === newSize) {
+      setTotalPrice("0.00");
+      setPrice("0.00");
+      setSelectedSize(null);
+      setCheeseShow(false);
+    } else {
+      setPrice(newPrice);
+      setTotalPrice((parseFloat(newPrice) + (cheeseAdded ? parseFloat(cheese) : 0)).toFixed(2));
+      setSelectedSize(newSize);
+      setCheeseShow(true);
+    }
+  };
+
+  const handlePrice = () => {
+    if (cheeseAdded) {
+      setTotalPrice((parseFloat(totalPrice) - parseFloat(cheese)).toFixed(2));
+    } else {
+      setTotalPrice((parseFloat(totalPrice) + parseFloat(cheese)).toFixed(2));
+    }
+    setCheeseAdded(!cheeseAdded);
+  };
+
+  if (!visible) return null;
   return (
-    <div className='p-6 bg-red-400 text-base text-blue-900 flex items-center justify-center py-10 w-full h-48 '>choose your Best Customization</div>
-  )
+    <div onClick={handleClose} id='outOfBorder' className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center'>
+      <div className="bg-white p-4 rounded-lg relative w-[90%] md:w-[60%] border border-gray-300 md:h-[70%] h-[80%] mt-5">
+        <div>
+          <button onClick={onClose} className='absolute top-0 right-0 m-2'>
+            <IoIosCloseCircle className='text-2xl' />
+          </button>
+        </div>
+        <div className='absoulute mt-8 w-full h-[90%]'>
+          {/* Desktop */}
+          <div className='flex flex-row gap-1'>  
+                <div className='hidden border rounded border-gray-400 p-2 md:flex flex-col gap-8 w-[50%] h-[75%]'>
+                  <div className='w-full flex items-center justify-center p-2'>
+                    <img src={data?.imageURL} alt="image" className='w-[65%] h-[65%] object-cover rounded-xl' />
+                  </div>
+                  <div className='w-full h-full flex items-center justify-center mb-3'>
+                    <p className='flex items-center justify-center text-pink-600'>{data?.description}</p>
+                  </div>
+                </div>
+
+                  <div className='hidden md:flex w-[50%] h-[90%]'>
+                    <div className='border rounded border-gray-400 w-full h-auto flex flex-col cursor-pointer gap-4 p-2'>
+                      <motion.div className='ml-1 flex items-center justify-start' onClick={() => setOptionView(!optionView)}
+                        initial={{ opacity: 0, x: 200 }} 
+                        animate={{ opacity: 1, x: 0 }} 
+                        exit={{ opacity: 0, x: 200 }} 
+                        whileTap={{ scale: 0.95 }} >
+                        <p className='text-black text-lg border-[1px] hover:border-2 hover:bg-orange-100 border-orange-600 rounded-xl p-1 w-full flex items-center justify-center'>Select size here...</p>
+                      </motion.div>
+                      {optionView && (
+                        <>
+                          <motion.div className='flex flex-col gap-2 border-1 border-dotted border-gray-300'
+                            initial={{ opacity: 0, y: 200 }} 
+                            animate={{ opacity: 1, y: 0 }} 
+                            exit={{ opacity: 0, y: 200 }} >
+
+                            <motion.div whileTap={{ scale: 0.95 }}
+                              className={`flex items-center gap-2 pb-2 border-dotted border-b-2 border-gray-300 cursor-pointer ${selectedSize === "small" ? 'text-orange-500 bg-white' : ' hover:text-slate-900'}`}
+                              onClick={(e) => handleSizeClick(e, "small", data?.smallPrice )}>
+                              <GiFullPizza className='text-xl' />
+                              <p className='text-lg'>small</p>
+                              <p className='flex items-center justify-center ml-auto text-lg'>{selectedSize === "small" ? price : data?.smallPrice}</p>
+                            </motion.div>
+
+                            <motion.div whileTap={{ scale: 0.95 }}
+                              className={`flex items-center gap-2 pb-2 border-dotted border-b-2 border-gray-300 cursor-pointer ${selectedSize === "medium" ? 'text-orange-500 bg-white' : ' hover:text-slate-900'}`}
+                              onClick={(e) => handleSizeClick(e, "medium", data?.mediumPrice)}>
+                              <GiFullPizza className='text-2xl' />
+                              <p className='text-lg '>medium</p>
+                              <p className='flex items-center justify-center ml-auto text-lg'>{selectedSize === "medium" ? price : data?.mediumPrice}</p>
+                            </motion.div>
+
+                            <motion.div whileTap={{ scale: 0.95 }}
+                              className={`flex items-center gap-2 cursor-pointer ${selectedSize === "large" ? 'text-orange-500 bg-white' : ' hover:text-slate-900'}`}
+                              onClick={(e) => handleSizeClick(e, "large", data?.largePrice)}>
+                              <GiFullPizza className=' text-3xl' />
+                              <p className='text-lg flex'>large</p>
+                              <p className='flex items-center justify-center ml-auto text-lg'>{selectedSize === "large" ? price : data?.largePrice}</p>
+                            </motion.div>
+
+                          </motion.div>
+
+                          {selectedSize && (
+                            <div className='flex item-center justify-center w-full mt-4 bg-yellow-200 rounded-xl'>
+                              <input type="checkbox" checked={cheeseAdded} onChange={handlePrice} name="Extra cheese" value="Extra cheese" className='ml-2' />
+                              <p className='text-black w-full flex items-center justify-start py-2 ml-1'>Extra cheese</p>
+                              <p className='text-blackflex items-center justify-center py-2 mr-2'>{cheese}</p>
+                            </div>
+                          )}
+
+                        </>
+                      )}
+                      <div className='flex items-center justify-center w-full gap-2'>
+                        <motion.button whileTap={{ scale: 0.85 }}
+                          type='button'
+                          className='w-[40%] flex items-center justify-center bg-pink-600 px-2 py-2 hover:bg-pink-900 rounded-2xl text-base text-white font-semibold'>
+                          Add
+                          <PiShoppingCartBold className='ml-2 text-white text-base' />
+                        </motion.button>
+                        <p className='w-[40%] px-2 py-1 drop-shadow-lg flex items-center justify-center text-xl font-semibold bg-green-400 rounded-lg'>
+                          {totalPrice !== '0.00' ? totalPrice : "0.00"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+          </div>
+
+
+          {/* Mobile */}
+          <div className='flex flex-col border rounded border-gray-400'>  
+                <div className='md:hidden p-2 flex flex-col gap-8 w-full h-[75%]'>
+                  <div className='w-full flex items-center justify-center p-2'>
+                    <img src={data?.imageURL} alt="image" className='w-[65%] h-[65%] object-cover rounded-xl' />
+                  </div>
+                  <div className='w-full h-full flex items-center justify-center mb-3'>
+                    <p className='flex items-center justify-center text-pink-600'>{data?.description}</p>
+                  </div>
+                </div>
+
+                  <div className='md:hidden flex w-full h-[90%]'>
+                    <div className=' h-auto w-full flex flex-col cursor-pointer gap-4 p-2'>
+                      <motion.div className='ml-1 flex items-center justify-start' onClick={() => setOptionView(!optionView)}
+                        initial={{ opacity: 0, x: 200 }} 
+                        animate={{ opacity: 1, x: 0 }} 
+                        exit={{ opacity: 0, x: 200 }} 
+                        whileTap={{ scale: 0.95 }} >
+                        <p className='text-black text-lg border-[1px] hover:border-2 hover:bg-orange-100 border-orange-600 rounded-xl p-1 w-full flex items-center justify-center'>Select size here...</p>
+                      </motion.div>
+                      {optionView && (
+                        <>
+                          <motion.div className='flex flex-col gap-2 border-1 border-dotted border-gray-300'
+                            initial={{ opacity: 0, y: 200 }} 
+                            animate={{ opacity: 1, y: 0 }} 
+                            exit={{ opacity: 0, y: 200 }} >
+
+                            <motion.div whileTap={{ scale: 0.95 }}
+                              className={`flex items-center gap-2 pb-2 border-dotted border-b-2 border-gray-300 cursor-pointer ${selectedSize === "small" ? 'text-orange-500 bg-white' : ' hover:text-slate-900'}`}
+                              onClick={(e) => handleSizeClick(e, "small", data?.smallPrice )}>
+                              <GiFullPizza className='text-xl' />
+                              <p className='text-lg'>small</p>
+                              <p className='flex items-center justify-center ml-auto text-lg'>{selectedSize === "small" ? price : data?.smallPrice}</p>
+                            </motion.div>
+
+                            <motion.div whileTap={{ scale: 0.95 }}
+                              className={`flex items-center gap-2 pb-2 border-dotted border-b-2 border-gray-300 cursor-pointer ${selectedSize === "medium" ? 'text-orange-500 bg-white' : ' hover:text-slate-900'}`}
+                              onClick={(e) => handleSizeClick(e, "medium", data?.mediumPrice)}>
+                              <GiFullPizza className='text-2xl' />
+                              <p className='text-lg '>medium</p>
+                              <p className='flex items-center justify-center ml-auto text-lg'>{selectedSize === "medium" ? price : data?.mediumPrice}</p>
+                            </motion.div>
+
+                            <motion.div whileTap={{ scale: 0.95 }}
+                              className={`flex items-center gap-2 cursor-pointer ${selectedSize === "large" ? 'text-orange-500 bg-white' : ' hover:text-slate-900'}`}
+                              onClick={(e) => handleSizeClick(e, "large", data?.largePrice)}>
+                              <GiFullPizza className=' text-3xl' />
+                              <p className='text-lg flex'>large</p>
+                              <p className='flex items-center justify-center ml-auto text-lg'>{selectedSize === "large" ? price : data?.largePrice}</p>
+                            </motion.div>
+
+                          </motion.div>
+
+                          {selectedSize && (
+                            <div className='flex item-center justify-center w-full mt-4 bg-yellow-200 rounded-xl'>
+                              <input type="checkbox" checked={cheeseAdded} onChange={handlePrice} name="Extra cheese" value="Extra cheese" className='ml-2' />
+                              <p className='text-black w-full flex items-center justify-start py-2 ml-1'>Extra cheese</p>
+                              <p className='text-blackflex items-center justify-center py-2 mr-2'>{cheese}</p>
+                            </div>
+                          )}
+
+                        </>
+                      )}
+                      <div className='flex items-center justify-center w-full gap-2'>
+                        <motion.button whileTap={{ scale: 0.85 }}
+                          type='button'
+                          className='w-[40%] flex items-center justify-center bg-pink-600 px-2 py-2 hover:bg-pink-900 rounded-2xl text-base text-white font-semibold'>
+                          Add
+                          <PiShoppingCartBold className='ml-2 text-white text-base' />
+                        </motion.button>
+                        <p className='w-[40%] px-2 py-1 drop-shadow-lg flex items-center justify-center text-xl font-semibold bg-green-400 rounded-lg'>
+                          {totalPrice !== '0.00' ? totalPrice : "0.00"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+          </div>
+
+        </div> 
+      </div>
+    </div>
+  );
 }
 
-export default Customization
+export default Customization;

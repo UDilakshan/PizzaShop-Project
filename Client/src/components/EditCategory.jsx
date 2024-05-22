@@ -6,7 +6,6 @@ import {
   MdCloudUpload, 
   MdDelete,  
   MdAttachMoney } from 'react-icons/md';
-import { categoryData2 } from '../utils/data';
 import Loader from './Loader';
 import { storage } from '../firebase.config';
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -19,19 +18,19 @@ import { useNavigate } from 'react-router-dom';
 
 const EditCategory = () => {
   const [title, setTitle] = useState("");
+  const [categoryData, setCategoryData] = useState("Category Data");
   const [fields, setFields] = useState(false);
   const [alertStatus, setAlertStatus] = useState("danger");
   const [msg, setMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(null);
-  const [category, setCategory] = useState(null);
   const [{ foodItems }, dispatch] = useStateValue();
 
 
   const uploadImage = (e) => {
     setIsLoading(true);
     const imageFile = e.target.files[0];  //can upload only one image(zero index)
-    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`)
+    const storageRef = ref(storage, `Images/CategoryData/${Date.now()}-${imageFile.name}`)
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
   uploadTask.on('state_changed', 
@@ -66,6 +65,7 @@ const EditCategory = () => {
 );
 
   };
+
 
   const deleteImage = () => {
     setIsLoading(true);
@@ -102,7 +102,7 @@ const EditCategory = () => {
             id:`${Date.now()}`,
             title : title,
             imageURL : imageAsset,
-            category : category
+            category : categoryData,
            }
 
            saveItem(data)
@@ -132,7 +132,7 @@ const EditCategory = () => {
   const clearData = () =>{
     setTitle("");
     setImageAsset(null);
-    setCategory("Category");
+    setCategoryData("Category Data");
   };
 
   const fetchData = async () => {
@@ -166,6 +166,7 @@ const EditCategory = () => {
               
           )
         }
+
         <div className='w-full py-2 border-b border-gray-300 flex
         items-center gap-2'>
           
@@ -182,7 +183,7 @@ const EditCategory = () => {
 
 
         
-        <div className='w-full'>
+{/*         <div className='w-full'>
          <div className='flex items-center gap-2' >
           <select onChange={(e)=>setCategory(e.target.value)} className='outline-none w-full text-base border-b-2 
           border-gray-200 p-2 rounded-md cursor-pointer'>
@@ -197,7 +198,7 @@ const EditCategory = () => {
             
           </select>
         </div>
-        </div>
+        </div> */}
 
 
         <div className='group flex justify-center items-center flex-col

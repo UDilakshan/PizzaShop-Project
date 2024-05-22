@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MdAdd, MdLogin, MdLogout,MdShowChart  } from "react-icons/md";
+import { MdAdd, MdLogin, MdLogout,  } from "react-icons/md";
+import { TfiMenuAlt } from "react-icons/tfi";
 import { FaBasketShopping } from "react-icons/fa6";
 import { IoHome } from "react-icons/io5";
 import { RiContactsBook2Fill } from "react-icons/ri";
@@ -24,6 +25,7 @@ function Header() {
     const firebaseAuth = getAuth(app);
     const [{user,cartItems,cartShow}, dispatch] = useStateValue();
     const [isMenu, setIsMenu] = useState(false);
+    const [tempIsmenu, setTempIsmenu] = useState(false)
     const [isOpenPopup, setIsOpenPopup] = useState(false);
     const navigate = useNavigate();
     // State variable to hold the login button text
@@ -46,7 +48,7 @@ function Header() {
       setIsOpenPopup(false);
   }; 
 
-
+  const [headerview, setHeaderView] = useState(true);
 
 
     useEffect(() => {
@@ -80,8 +82,11 @@ function Header() {
       const handleClick = () =>{
         if(user){
           setIsMenu(!isMenu);
-        }
-           
+        }           
+      }
+
+      const menuOpen = () =>{
+        setTempIsmenu(!tempIsmenu)
       }
 
 
@@ -115,6 +120,15 @@ function Header() {
     }
 
     useEffect (()=>{},[cartShow]);
+
+    const clickEvent = () =>{
+      setTempIsmenu(false);
+      setIsMenu(false);
+      setHeaderView(false);
+    }
+
+
+    if(!headerview) return null;
 
   return (
     <div className='fixed z-50 w-screen h-24 p-3 px-4 md:p-6 md:px-16 cursor-pointer bg-black'>
@@ -239,11 +253,20 @@ function Header() {
 
                   {   
                       user && user.email === "opizzashop@gmail.com" && (        
+                       <>
                         <Link to = {"/createItem"}>
                             <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
                             transition-all duration-100 ease-in-out text-textColor text-base rounded-lg hover:bg-slate-200' onClick={()=>setIsMenu(false)}>
                             New Item <MdAdd /> </p>
+                        </Link> 
+
+                        <Link to = {"/Dashboard"}>
+                            <p className='px-4 py-2 flex items-center gap-3 cursor-pointer hover: bg-slate-100
+                            transition-all duration-100 ease-in-out text-textColor text-base rounded-lg hover:bg-slate-200' 
+                            onClick={clickEvent}>
+                            Dashboard </p>
                         </Link>   
+                        </>
 
                   )}
 
@@ -280,16 +303,12 @@ function Header() {
             }
         </motion.div>
 
-
-
-
         <Link to = {"/"} className='flex items-center gap-2'>
             <img src={Logo} className='object-cover w-12' alt="Logo" />
             <p className=' font-pacifico text-slate-100 text-xl font-bold'>Pizza Shop</p>
         </Link>
         
-
-        <div className='relative'>
+        <div onClick={()=>setTempIsmenu(false)} className='relative'>
         
         {!user && (
                 <motion.p 
@@ -322,9 +341,10 @@ function Header() {
 
           )} 
 
+
+
             {
-               isMenu && (
-                    
+               isMenu && (                   
                 <motion.div 
 
                 initial = {{opacity:0, x: 200, scale: 0.6 }} 
@@ -334,25 +354,71 @@ function Header() {
                 className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0'>
 
                 {user && user.email === "opizzashop@gmail.com" && (
-
-                    <Link to = {"/createItem"} >
+                  <>
+                      <Link to = {"/createItem"} >
                       <div className='flex mt-4 hover:bg-orange-500 hover:text-slate-100 duration-100
                        transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>
                       <VscNewFile className='mt-1 ml-4'/>
                       <p className='text-lg px-1'>
                         New Item </p>
                       </div>
-                    </Link>
+                     </Link>
+
+                     <Link to = {"/Dashboard"} >
+                      <div className='flex ml-8 hover:bg-orange-500 hover:text-slate-100 duration-100
+                       transition-all ease-in-out cursor-pointer' onClick={clickEvent}>
+                      <p className='text-lg px-1'>
+                        Dash Board </p>
+                      </div> 
+                      </Link>
+                  </>
+                    
             )}
 
+            <ul
+                className='flex flex-col gap-1'>       
+                    <motion.li whileTap={{scale:0.8}}>
+                      <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
+                       transition-all ease-in-out cursor-pointer mb-4'>
+                      <MdLogout className='mt-1 ml-4'/>
+                      <p className='text-lg px-1 ' onClick={logout}>
+                        Logout </p>
+                      </div>  
+                    </motion.li>
+            </ul>
+            </motion.div>
+            )
+            }
 
+        </div>
+         
+         <div className='relative'>    
+            <motion.div onClick={()=>setIsMenu(false)}
+            initial = {{opacity:0, x: 200 }} 
+            animate = {{opacity:1, x: 0 }} 
+            exit = {{opacity:0, x: 200 }} 
+            whileTap={{ scale : 0.6 }} >
+              <TfiMenuAlt className='font-pacifico text-slate-100 text-xl font-bold' onClick={menuOpen}/>
+            </motion.div>
+
+
+
+            {
+               tempIsmenu && (                    
+                <motion.div 
+
+                initial = {{opacity:0, x: 200, scale: 0.6 }} 
+                animate = {{opacity:1, x: 0,scale: 1 }} 
+                exit = {{opacity:0, x: 200, scale: 0.6 }} 
+                
+                className='w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0'>
 
             <ul
                 className='flex flex-col gap-1'>
               <Link to = {"/"}>
                 <motion.li whileTap={{scale:0.8}}>
                       <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
-                       transition-all ease-in-out cursor-pointer mt-4' onClick={()=>setIsMenu(false)}>
+                       transition-all ease-in-out cursor-pointer mt-4' onClick={()=>setTempIsmenu(false)}>
                       <IoHome className='mt-1 ml-4'/>
                       <p className='text-lg px-1'>
                         Home </p>
@@ -363,7 +429,7 @@ function Header() {
             <Link to ={"/FullMenuContainer"}>
                <motion.li whileTap={{scale:0.8}}>
                       <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
-                       transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>
+                       transition-all ease-in-out cursor-pointer' onClick={()=>setTempIsmenu(false)}>
                       <BiSolidFoodMenu className='mt-1 ml-4'/>
                       <p className='text-lg px-1'>
                         Menu </p>
@@ -374,7 +440,7 @@ function Header() {
              <Link to = {"/AboutUs"}>
              <motion.li whileTap={{scale:0.8}}>
                       <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
-                       transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>
+                       transition-all ease-in-out cursor-pointer' onClick={()=>setTempIsmenu(false)}>
                       <FaCircleUser className='mt-1 ml-4'/>
                       <p className='text-lg px-1'>
                         About Us </p>
@@ -385,30 +451,19 @@ function Header() {
             <Link to = {"/ContactUs"}>
             <motion.li whileTap={{scale:0.8}}>
                       <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
-                       transition-all ease-in-out cursor-pointer mb-4' onClick={()=>setIsMenu(false)}>
+                       transition-all ease-in-out cursor-pointer mb-4' onClick={()=>setTempIsmenu(false)}>
                       <RiContactsBook2Fill className='mt-1 ml-4'/>
                       <p className='text-lg px-1'>
                         Contact Us </p>
                       </div>  
                  </motion.li>
             </Link>
-
-            <motion.li whileTap={{scale:0.8}}>
-                      <div className='flex hover:bg-orange-500 hover:text-slate-100 duration-100
-                       transition-all ease-in-out cursor-pointer mb-4'>
-                      <MdLogout className='mt-1 ml-4'/>
-                      <p className='text-lg px-1 ' onClick={logout}>
-                        Logout </p>
-                      </div>  
-            </motion.li>
-                  
-
             </ul>
             </motion.div>
             )
             }
 
-        </div> 
+        </div>
         
     </div>
 
