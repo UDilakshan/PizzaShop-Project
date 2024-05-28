@@ -119,7 +119,7 @@ const RowContainer = ({ flag,data }) => {
                         animate={item.category === 'Offers' ? { scale: [0.9, 0.7, 0.9], transition: { duration: 1.0, repeat: Infinity } } : { scale: 1 }}
                         exit={{ scale: 1 }}
                         whileTap={{scale:0.8}}
-                        onClick={()=> setFilter(item.title)}                    
+                        onClick={()=> setFilter(item?.title)}                    
                       />
                     </div>
                     <div className='w-full items-center justify-center flex flex-col'>

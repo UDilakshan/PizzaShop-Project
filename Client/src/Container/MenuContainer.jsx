@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PiShoppingCartBold } from "react-icons/pi";
 import { Customization } from '../components';
+import { Link } from 'react-router-dom';
 
 const MenuContainer = ({ data }) => {
   const [modelView, setModelView] = useState(false);
@@ -45,14 +46,28 @@ const MenuContainer = ({ data }) => {
                   )}
 
                 {
-                  item?.usualprice!=="" && (
-                     <motion.button whileTap={{ scale: 0.85 }}
+                  item?.usualprice!=="" && item?.category !== "OPizza Offers" && (    
+                   <motion.button whileTap={{ scale: 0.85 }}
                     type='button'
                     className='w-[30%] md:ml-8 ml-4 flex items-center justify-center bg-red-600 px-2 py-2 hover:bg-red-700 rounded-2xl md:text-base text-sm text-white font-semibold'>
                     Add to
                     <PiShoppingCartBold className='ml-2 text-white text-base' />
                   </motion.button>
                   )}
+
+                {
+                  item?.usualprice!=="" && item?.category === "OPizza Offers" && (
+                    <Link to={"/Offers"}>                        
+                      <motion.button whileTap={{ scale: 0.85 }}
+                        type='button'
+                        className='w-[30%] md:ml-8 ml-4 flex items-center justify-center bg-yellow-600 px-2 py-2 hover:bg-yellow-700 rounded-2xl md:text-base text-sm text-white font-semibold'>
+                        Get Offer!
+                      </motion.button>
+                  </Link>
+                    
+                  )}
+
+
           </div>
         ))}
       </div>

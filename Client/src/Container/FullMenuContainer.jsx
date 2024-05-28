@@ -12,7 +12,7 @@ const FullMenuContainer = () => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   // Filter out items with category "Category Data"
-  const data = foodItems ? foodItems.filter(n => n.category !== "Category Data") : [];
+  const data = foodItems ? foodItems.filter(n => n.category !== "Category Data" && n.category!== "OPizza Offers") : [];
 
   // Group the remaining items by their category
   const groupedData = data.reduce((acc, item) => {
