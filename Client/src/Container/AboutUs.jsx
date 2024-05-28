@@ -1,58 +1,167 @@
-import React from 'react';
-import { FaMapMarkerAlt } from 'react-icons/fa'; 
-import About from "../images/OtherImages/About.gif";
+import React, { useState } from 'react';
+import { contact_types } from '../utils/data';
 
-const AboutUs = () => {
+const ContactUs = () => {
+  // Define state variables for form fields
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Check if all details are filled correctly
+    if (fname && lname && email && phone && message && !emailError) {
+      console.log("Form submitted!");
+      console.log("First Name:", fname);
+      console.log("Last Name:", lname);
+      console.log("Email:", email);
+      console.log("Phone:", phone);
+      console.log("Message:", message);
+      
+      // Reset form fields and show success message
+      setFname("");
+      setLname("");
+      setEmail("");
+      setPhone("");
+      setMessage("");
+      setEmailError("");
+      setFormSubmitted(true);
+    } else {
+      // Show error message if details are not filled correctly
+      setFormSubmitted(false);
+      console.log("Please fill in all details correctly.");
+    }
+  };
+
+  const validateEmailFormat = (input) => {
+    return pattern.test(input);
+  };
+
+  const handleEmailChange = (e) => {
+    const inputValue = e.target.value;
+    setEmail(inputValue);
+
+    if (!validateEmailFormat(inputValue) && inputValue !== "") {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center bg-cyan-700 py-20">
-      <div className="max-w-4xl px-8 py-12 bg-white rounded-lg shadow-lg">
-        <h2 className="text-3xl text-center font-semibold mb-6">Welcome to O'Pizza</h2>
-        <div className="flex justify-center mb-8">
-          <img
-            src={About}
-            alt="About"
-            className="w-96 h-auto rounded-md shadow-2xl"
-          />
+    <div className="flex items-center justify-center bg-cyan-900 p-20 mt-12 pb-40">
+      <form className="w-full max-w-lg bg-white rounded-lg p-8" onSubmit={handleSubmit}>
+        <h2 className="text-2xl text-center font-semibold mb-6">FEEDBACK FORM</h2>
+
+        <div className='w-full mb-6'>
+          <div className='flex items-center gap-2'>
+            <select className='outline-none w-full text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer'>
+              <option value="other" className='bg-white'>Contact</option>
+              { contact_types && contact_types.map(item => (
+                <option key={item.id} className='text-base border-0 outline-none capitalize bg-white text-headingColor' value={item.urlParamName}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <ul className="list-disc pl-8">
-          <li>
-            <span className="flex items-center">
-              <FaMapMarkerAlt className="mr-2" />
-              <a href="https://maps.app.goo.gl/bsn3BgkRqAiap26v6" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>Visit us on Google Maps</a>
-            </span>
-          </li>
-        </ul>
-        <br />
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className='w-full md:w-1/2 px-3 mb-6 md:mb-0'>
+            <label className="block uppercase tracking-wide text-gray-700 text-s font-bold mb-2" htmlFor="grid-first-name">First Name</label>
+            <input
+              className="appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              type="text"
+              placeholder=""
+              value={fname}
+              onChange={(e) => {
+                const inputValue = e.target.value.replace(/[^A-Za-z]/ig, '').substring(0, 20);
+                setFname(inputValue);
+              }}
+              required
+            />
+          </div>
 
-        <ul className="list-disc pl-8">
-          <li>Welcome to <span style={{ color: 'red'}}>O'Pizza</span>, where every slice tells a story of passion and taste.</li>
-          <br />
-          <li>Since our inception on December 5, 2020, we've been dedicated to crafting the finest pizzas in Thirunelvely, Jaffna, Sri Lanka, using traditional cultural methods.</li>
-          <br />
-          <li>At O'Pizza, we pride ourselves on our commitment to authenticity and quality.</li>
-          <br />
-          <li>We do not use conventional ovens to bake our pizzas; instead, we employ <span style={{ color: 'red'}}>fire foods and cultural techniques</span> passed down through generations.</li>
-        </ul>
-        <br />
+          <div className="w-full md:w-1/2 px-3">
+            <label className="block uppercase tracking-wide text-gray-700 text-s font-bold mb-2" htmlFor="grid-last-name">Last Name</label>
+            <input
+              className="appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              type="text"
+              placeholder=""
+              value={lname}
+              onChange={(e) => {
+                const inputValue = e.target.value.replace(/[^A-Za-z]/ig, '').substring(0, 20);
+                setLname(inputValue);
+              }}
+              required
+            />
+          </div>
+        </div>
 
-        <ul className="list-disc pl-8">
-          <li>Nestled at <span style={{ color: 'red'}}>15/2, 10th Lane, Thalankavil Pillayar Road </span>, our cozy pizzeria offers a warm ambiance for dine-in guests.</li>
-          <br />
-          <li>We also cater to those on the go with our convenient take-away service.</li>
-          <br />
-          <li>However, our heart lies in delivery, as we strive to bring the irresistible flavors of O'Pizza to doorsteps across Jaffna city, all at no extra charge.</li>
-          <br />
-          <li>With a commitment to quality and satisfaction, we invite you to experience the essence of authentic pizza.</li>
-          <br />
-          <li>For inquiries or orders, simply reach out to us at <span style={{ color: 'red'}}>0777134777</span>.</li>
-          <br />
-          <li>O'Pizza - where every bite is a taste of perfection.</li>
-        </ul>
-      
-      </div>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full px-3">
+            <label className="block uppercase tracking-wide text-gray-700 text-s font-bold mb-2" htmlFor="grid-email">Email</label>
+            <input
+              className={`appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${emailError ? 'border-red-500' : ''}`}
+              type="email"
+              placeholder="example@gmail.com"
+              value={email}
+              onChange={handleEmailChange}
+              required
+            />
+            {emailError && <p className="text-red-500 text-xs italic">{emailError}</p>}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full px-3">
+            <label className="block uppercase tracking-wide text-gray-700 text-s font-bold mb-2" htmlFor="grid-phone">Phone Number</label>
+            <input
+              className="appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              type="tel"
+              placeholder=""
+              value={phone}
+              onChange={(e) => setPhone(e.target.value.replace(/\D+/g, '').substring(0, 10))}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full px-3">
+            <label className="block uppercase tracking-wide text-gray-700 text-s font-bold mb-2" htmlFor="grid-message">Message</label>
+            <textarea
+              className="appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              placeholder="Type your message here..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value.replace(/[^A-Za-z0-9\s]/ig, ''))}
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            className="bg-pink-600 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+
+        {formSubmitted && (
+          <div className="text-green-500 text-center mt-4">Thank you for your feedback.</div>
+        )}
+      </form>
     </div>
   );
-}
+};
 
-export default AboutUs;
+export default ContactUs;
