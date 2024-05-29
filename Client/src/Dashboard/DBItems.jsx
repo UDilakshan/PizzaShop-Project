@@ -6,4 +6,4 @@ const DBItems = () => {
   )
 }
 
-export default DBItems;
+export default DBItems
