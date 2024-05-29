@@ -219,4 +219,6 @@ const Customization = ({ visible, onClose, data }) => {
   );
 }
 
+
 export default Customization;
+

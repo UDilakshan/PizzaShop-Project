@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { Route, Routes, useLocation, BrowserRouter as Router } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+
 import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  CartContainter, ContactUs, Header, Offers, FullMenuContainer, Footer, Dashboard } from "./components";
+
 import { useStateValue } from "./context/StateProvider";
 import { getAllFoodItems } from "./utils/firebaseFunctions";
 import { actionType } from "./context/reducer";
@@ -31,7 +33,9 @@ function App() {
     && location.pathname !== '/Dashboard/items'
     && location.pathname !== '/Dashboard/addnewitems'
     && location.pathname !== '/Dashboard/users' ;
+
   };
+
 
   const showHeader = useHeaderVisibility();
 
@@ -54,6 +58,7 @@ function App() {
           </Routes>          
         </main>
         <Footer />
+
       </div>
     </AnimatePresence>
   );

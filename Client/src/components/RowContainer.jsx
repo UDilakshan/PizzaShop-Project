@@ -5,7 +5,9 @@ import { motion } from 'framer-motion';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
 import Loader from '../DashBoard/Loader';
+
 import MenuContainer from '../Container/MenuContainer';
 import { useStateValue } from '../context/StateProvider';
 
