@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import NewUpdates from '../components/NewUpdates';
-import MenuContainer from './MenuContainer';
 import { useStateValue } from '../context/StateProvider';
-import CardContainter from './CardContainter';
+import CartContainer from './CartContainer';
 import CategoryContainer from '../components/CategoryContainer';
 
 
@@ -11,16 +10,14 @@ function HomeContainer() {
    useEffect (()=> {},[cartShow]);
 
   return (
-    <div className='mt-28 w-full'>
+    <div className='mt-28 w-full pb-40'>
 
        <NewUpdates/>
        <CategoryContainer />
-        {/* <MenuContainer /> */}
-       {cartShow && (<CardContainter/>)} 
+       {cartShow && (<CartContainer/>)} 
 
     </div>
   )
 }
 
 export default HomeContainer
-

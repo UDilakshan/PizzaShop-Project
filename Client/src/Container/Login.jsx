@@ -23,7 +23,7 @@ const LoginInput = ({ placeHolder, icon, inputState, inputStateFun, type, isSign
     initial = {{opacity:0, x: 200 }} 
     animate = {{opacity:1, x: 0 }} 
     exit = {{opacity:0, x: 200 }}
-      className={`flex f items-center justify-center gap-1 bg-red-600  backdrop-blur-18
+      className={`flex f items-center justify-center gap-1 z-50 bg-red-600  backdrop-blur-18
    rounded-md w-full px-1 py-2 ${isFocus ? 'shadow-md shadow-red-900 ' : 'shadow-none' }`}>
       {icon}
       <input

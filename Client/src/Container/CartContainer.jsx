@@ -6,7 +6,7 @@ import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
 import empty from '../images/OtherImages/empty.jpg';
 
-const CardContainter = () => {
+const CartContainer = () => {
   const [{ cartShow,cartItems, user }, dispatch] = useStateValue();
   const [tot, setTot] = useState(0);
   const [flag, setFlag] = useState(false);
@@ -39,8 +39,7 @@ const CardContainter = () => {
         initial={{ opacity: 0, x: 200 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 0 }}
-        className='fixed top-24 right-0 w-1/3  py-1 bg-gradient-to-r from-gray-500 to-white-600 drop-shadow-md
-        flex flex-col  h-screen z-[101] '>
+        className='fixed top-24 right-0 md:w-375 w-full py-1 bg-gradient-to-r from-gray-500 to white drop-shadow-md flex flex-col h-screen z-[101] '>
         <div className='w-full  flex items-center justify-between p-4 cursor-pointer bg-black gap-3'>
           <motion.div whileTap={{ scale: 0.8 }} onClick={showCart}>
             <MdOutlineKeyboardBackspace className=' text-white text-2xl' />
@@ -108,7 +107,7 @@ const CardContainter = () => {
           <div className='w-full h-full flex flex-col items-center justify-center gap-6'>
             <img
               src={empty}
-              className='w-30 h-30 max-w-[250px] rounded-full object-contain'
+              className='md:w-30 md:h-30 max-w-[250px] w-[180px] h-[180px] rounded-full object-contain'
               alt='Empty Cart'
             />
             <p className='text-xl text-black font-semibold'>
@@ -120,4 +119,4 @@ const CardContainter = () => {
 
   );
 };
-export default CardContainter;
+export default CartContainer;

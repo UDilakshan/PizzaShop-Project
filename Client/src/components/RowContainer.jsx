@@ -1,11 +1,11 @@
-/* This is for categories only */
-/* Clearly look that footItems.category should be same of Category.title */
+/* This is for showing categories images only */
 
 import React, {useState} from 'react';
 import { motion } from 'framer-motion';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Loader from './Loader';
 import MenuContainer from '../Container/MenuContainer';
 import { useStateValue } from '../context/StateProvider';
 
@@ -50,11 +50,7 @@ import { useStateValue } from '../context/StateProvider';
         );
       } 
 
-const RowContainer = ({ flag,data }) => {
-  console.log(data);  
-  const [filter, setFilter] = useState("OPizza Offers");
-  const [{foodItems}, dispatch] = useStateValue(); 
-  
+const RowContainer = ({ flag,data }) => { 
       const settings = {
       infinite: false,
       dots: true,
@@ -87,47 +83,58 @@ const RowContainer = ({ flag,data }) => {
             prevArrow: false ,
             slidesToShow: 1,
             slidesToScroll: 1,
-            initialSlide: 1
+            initialSlide: 0,
           }
         }
       ]
 
     };
 
+    const [filter, setFilter] = useState("OPizza Offers");
+    const [{foodItems}, dispatch] = useStateValue();
+  
+
+    if (!data || data.length === 0) {
+      return <div className='flex items-end justify-center mt-20'>
+      <Loader /><span className='text-lg text-pink-600'>Processing...</span>
+      </div>; 
+    }
+
   return (
     <div className={`flex items-center justify-center md:my-8 ${flag 
       ? 'overflow-x-scroll scrollbar-none' 
       : 'overflow-x-hidden flex-wrap scroll-smooth'} `}>  
       
-      <div className='md:w-[92%] w-full mx-auto my-8 md:mt-4'>
-        <Slider {...settings} > 
-          { 
-            data && data.map(item => (
-              <motion.div className= 'w-full h-auto flex flex-col'>
-                <div key={item?.id} className='w-full h-auto flex items-center justify-center'>
-                  <motion.img
-                    src={item?.imageURL}
-                    alt='image'
-                    className={`${filter===item.category ? 'bg-red-500' : 'bg-white'} cursor-pointer md:w-40 w-36 h-auto rounded-md hover:drop-shadow-xl`}
-                    initial={{ scale: 1 }}
-                    animate={item.category === 'Offers' ? { scale: [0.9, 0.7, 0.9], transition: { duration: 1.0, repeat: Infinity } } : { scale: 1 }}
-                    exit={{ scale: 1 }}
-                    whileTap={{scale:0.8}}
-                    onClick={()=> setFilter(item.title)}                    
-                  />
-                </div>
-                <div className='w-full items-center justify-center flex flex-col'>
-                  <p className='text-teal-900 font-semibold text-lg md:text-xl'>{item?.title}</p>
-                </div>
-              </motion.div>                       
-          ))}
-          </Slider>          
-      </div>
-            <div className='w-full'>
-              <MenuContainer flag={false} data ={foodItems?.filter(n=> n.category == filter)}
- />
-              </div>       
-    </div>                            
+        <div className='md:w-[92%] w-full mx-auto my-8 md:mt-4'>
+            <Slider {...settings} > 
+              { 
+                data && data.map(item => (
+                  <motion.div className= 'w-full h-auto flex flex-col'>
+                    <div key={item?.id} className='w-full h-auto flex items-center justify-center'>
+                      <motion.img
+                        src={item?.imageURL}
+                        alt='image'
+                        className={`${filter===item.category ? 'bg-red-500' : 'bg-white'} cursor-pointer md:w-40 w-36 h-auto rounded-md hover:drop-shadow-xl`}
+                        initial={{ scale: 1 }}
+                        animate={item.category === 'Offers' ? { scale: [0.9, 0.7, 0.9], transition: { duration: 1.0, repeat: Infinity } } : { scale: 1 }}
+                        exit={{ scale: 1 }}
+                        whileTap={{scale:0.8}}
+                        onClick={()=> setFilter(item?.title)}                    
+                      />
+                    </div>
+                    <div className='w-full items-center justify-center flex flex-col'>
+                      <p className='text-teal-900 font-semibold text-lg md:text-xl'>{item?.title}</p>
+                    </div>
+                  </motion.div>                       
+              ))}
+              </Slider>          
+        </div>
+
+        <div className='w-full'>                 
+            <MenuContainer flag={false} data ={foodItems?.filter(n=> n.category == filter)}/>
+        </div> 
+      
+  </div>                            
   );
 }
 

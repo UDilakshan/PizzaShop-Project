@@ -14,5 +14,10 @@ html,body {
   overflow-x: hidden;
 }
 
-
-
+.background{
+  background-image: url("./images/OtherImages/MenuBg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 160px;
+  background-attachment: fixed;
+}
