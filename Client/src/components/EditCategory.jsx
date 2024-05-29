@@ -7,7 +7,7 @@ import {
   MdDelete,  
   MdAttachMoney } from 'react-icons/md';
 
-import Loader from '../DashBoard/Loader';
+import Loader from '../Dashboard/Loader';
 
 import { storage } from '../firebase.config';
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
