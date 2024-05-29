@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Routes, useLocation, BrowserRouter as Router } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  
-  CartContainter, ContactUs, Header, Offers, FullMenuContainer, Footer, Dashboard } from "./components";
+import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  CartContainter, ContactUs, Header, Offers, FullMenuContainer, Footer, Dashboard } from "./components";
 import { useStateValue } from "./context/StateProvider";
 import { getAllFoodItems } from "./utils/firebaseFunctions";
 import { actionType } from "./context/reducer";
@@ -25,7 +24,13 @@ function App() {
 
   const useHeaderVisibility = () => {
     const location = useLocation();
-    return location.pathname !== '/Dashboard';
+    // Return true if the pathname is not '/Dashboard' or '/Dashboard/items'
+    return location.pathname !== '/Dashboard' 
+    && location.pathname !== '/Dashboard/home' 
+    && location.pathname !== '/Dashboard/orders' 
+    && location.pathname !== '/Dashboard/items'
+    && location.pathname !== '/Dashboard/addnewitems'
+    && location.pathname !== '/Dashboard/users' ;
   };
 
   const showHeader = useHeaderVisibility();
