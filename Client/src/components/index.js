@@ -2,20 +2,20 @@ export {default as CategoryContainer} from "./CategoryContainer";
 export {default as CreateContainer} from "./CreateContainer";
 export {default as Customization} from './Customization';
 export {default as EditCategory} from './EditCategory';
-export {default as Loader} from './Loader';
+export {default as Loader} from '../Dashboard/Loader';
 export {default as NewUpdates} from "./NewUpdates";
 export {default as RowContainer} from "./RowContainer";
 export {default as Offers} from "./Offers";
-export {default as Dashboard} from "./Dashboard";
-export {default as DBLeftSection} from "./DBLeftSection";
-export {default as DBRightSection} from "./DBRightSection";
+export {default as Dashboard} from "../Dashboard/Dashboard";
+export {default as DBLeftSection} from "../Dashboard/DBLeftSection";
+export {default as DBRightSection} from "../Dashboard/DBRightSection";
 
-export {default as DBHeader} from "./DBHeader";
-export {default as DBHome} from "./DBHome";
-export {default as DBItems} from "./DBItems";
-export {default as DBOrders} from "./DBOrders";
-export {default as DBUsers} from "./DBUsers";
-export {default as DBNewitem} from "./DBNewitem";
+export {default as DBHeader} from "../Dashboard/DBHeader";
+export {default as DBHome} from "../Dashboard/DBHome";
+export {default as DBItems} from "../Dashboard/DBItems";
+export {default as DBOrders} from "../Dashboard/DBOrders";
+export {default as DBUsers} from "../Dashboard/DBUsers";
+export {default as DBNewitem} from "../Dashboard/DBNewitem";
 
 
 
