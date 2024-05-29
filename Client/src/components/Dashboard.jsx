@@ -1,13 +1,13 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-const Dashboard = () => {
-  return (
-    <div  className='flex items-center justify-center bg-pink-600 w-full h-screen'>
-        <Link to={"/"}>
-            <button className='bg-white text-black px-4 py-2'>Home</button>
-        </Link>
-    </div>
-  )
-}
+import React from "react";
+import { DBLeftSection, DBRightSection } from "../components";
 
-export default Dashboard
+const Dashboard = () => {
+    return (
+        <div className="w-screen h-screen flex items-center bg-primary">
+            <DBLeftSection />
+            <DBRightSection />
+        </div>
+    );
+};
+
+export default Dashboard;

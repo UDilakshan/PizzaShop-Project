@@ -1,33 +1,40 @@
 import React, { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, BrowserRouter as Router } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  
-  CartContainer, ContactUs, Customization, Header, Offers, FullMenuContainer } from "./components";
-
-import { BrowserRouter as Router } from "react-router-dom";
+  CartContainer, ContactUs, Header, Offers, FullMenuContainer, Dashboard , Customization} from "./components";
 import { useStateValue } from "./context/StateProvider";
 import { getAllFoodItems } from "./utils/firebaseFunctions";
 import { actionType } from "./context/reducer";
 
-
 function App() {
- 
   const [{foodItems}, dispatch] = useStateValue();
-  
+
   const fetchData = async () => {
-    await getAllFoodItems() .then((data) => {
+    await getAllFoodItems().then((data) => {
       dispatch({
-        type : actionType.SET_FOOD_ITEMS,
-        foodItems : data,
+        type: actionType.SET_FOOD_ITEMS,
+        foodItems: data,
       });
     });
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[]);
-   
+  }, []);
 
+  const useHeaderVisibility = () => {
+    const location = useLocation();
+    // Return true if the pathname is not '/Dashboard' or '/Dashboard/items'
+    return location.pathname !== '/Dashboard' 
+    && location.pathname !== '/Dashboard/home' 
+    && location.pathname !== '/Dashboard/orders' 
+    && location.pathname !== '/Dashboard/items'
+    && location.pathname !== '/Dashboard/addnewitems'
+    && location.pathname !== '/Dashboard/users' ;
+};
+
+  const showHeader = useHeaderVisibility();
 
   return (
     
@@ -49,6 +56,7 @@ function App() {
               <Route path="FullMenuContainer" element = {<FullMenuContainer/>} />
               <Route path="/EditCategory" element={<EditCategory />} />
               <Route path="/Offers" element={<Offers />} />
+              <Route path="/Dashboard/*" element={<Dashboard />} />
 
             </Routes>
           </main>
