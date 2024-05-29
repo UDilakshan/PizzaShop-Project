@@ -15,7 +15,9 @@ import { Link, useNavigate  } from "react-router-dom";
 import { useStateValue } from '../context/StateProvider';
 import { actionType } from '../context/reducer';
 import Login from '../Container/Login';
-import CartContainer from './CartContainer';
+
+import CartContainter from './CartContainter';
+
 import {MD5} from 'crypto-js';
 
 

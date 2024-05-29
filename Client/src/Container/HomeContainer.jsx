@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import NewUpdates from '../components/NewUpdates';
 import { useStateValue } from '../context/StateProvider';
-import CartContainer from './CartContainer';
+
+import CartContainter from './CartContainter';
+
 import CategoryContainer from '../components/CategoryContainer';
 
 
@@ -14,7 +16,9 @@ function HomeContainer() {
 
        <NewUpdates/>
        <CategoryContainer />
-       {cartShow && (<CartContainer/>)} 
+
+       {cartShow && (<CartContainter/>)} 
+
 
     </div>
   )
