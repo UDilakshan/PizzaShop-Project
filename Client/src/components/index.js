@@ -7,7 +7,7 @@ export {default as Loader} from '../DashBoard/Loader';
 export {default as NewUpdates} from "./NewUpdates";
 export {default as RowContainer} from "./RowContainer";
 export {default as Offers} from "./Offers";
-export {default as Dashboard} from "../DashBoard/DashBoard";
+export {default as Dashboard} from "../DashBoard/Dashboard";
 
 
 
@@ -31,5 +31,5 @@ export {default as DBHome} from "../DashBoard/DBHome";
 export {default as DBItems} from "../DashBoard/DBItems";
 export {default as DBOrders} from "../DashBoard/DBOrder";
 export {default as DBUsers} from "../DashBoard/DBOrder";
-export {default as DBNewitem} from "../DashBoard/DBNewItem";
+export {default as DBNewitem} from "../DashBoard/DBNewitem";
 
