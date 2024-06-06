@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MdFastfood, MdCloudUpload, MdDelete, MdAttachMoney } from 'react-icons/md';
+import { MdFastfood, MdCloudUpload, MdDelete, MdAttachMoney, MdDescription } from 'react-icons/md';
 import { Spinner } from '../components'; 
 import { storage } from '../firebase.config';
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -7,13 +7,14 @@ import { getAllFoodItems, saveItem } from '../utils/firebaseFunctions';
 import { actionType } from "../context/reducer";
 import { useStateValue } from "../context/StateProvider";
 
-const DBItems = () => {
+const DBNewItem = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [mediumPrice, setMediumPrice] = useState("");
   const [smallPrice, setSmallPrice] = useState("");
   const [largePrice, setLargePrice] = useState("");
+  const [description, setDescription] = useState("");
   const [fields, setFields] = useState(false);
   const [alertStatus, setAlertStatus] = useState("danger");
   const [msg, setMsg] = useState(null);
@@ -87,9 +88,9 @@ const DBItems = () => {
   const saveDetails = () => {
     setIsLoading(false);
     try {
-      if (!title || !imageAsset || !category || (!price && !mediumPrice && !smallPrice && !largePrice)) {
+      if (!title || !imageAsset || !category || !description || (!price && !mediumPrice && !smallPrice && !largePrice)) {
         setFields(true);
-        setMsg('Required fields cannot be empty');
+        setMsg('Required fields cannot be empty!');
         setAlertStatus('danger');
         setTimeout(() => {
           setFields(false); 
@@ -104,12 +105,13 @@ const DBItems = () => {
           price: category === "Veg" || category === "Non Veg"
             ? { medium: mediumPrice, small: smallPrice, large: largePrice }
             : price,
+          description: description // Include description in data
         };
   
         saveItem(data);
         setIsLoading(false);
         setFields(true);
-        setMsg("Data uploaded successfully");
+        setMsg("Data uploaded successfully ✔");
         setAlertStatus("success");
         setTimeout(() => {
           setFields(false);
@@ -119,7 +121,7 @@ const DBItems = () => {
     } catch (error) {
       console.log(error);
       setFields(true);
-      setMsg('Error while uploading : Try Again');
+      setMsg('Error while uploading : Try Again!!');
       setAlertStatus('danger');
       setTimeout(() => {
         setFields(false); 
@@ -137,6 +139,7 @@ const DBItems = () => {
     setMediumPrice("");
     setSmallPrice("");
     setLargePrice("");
+    setDescription(""); 
   };
 
   const fetchData = async () => {
@@ -159,18 +162,19 @@ const DBItems = () => {
   };
 
   return (
-    <div className='w-full min-h-screen flex items-center justify-center bg-primary mt-20'>
+    <div className='w-full min-h-screen flex flex-col items-center justify-center bg-primary mt-40 relative z-10'>
+
       <div className='w-[90%] md:w-[75%] border border-gray-600 bg-gray-100 rounded-lg p-4 flex flex-col 
       items-center justify-center gap-4'>
-
-        <div className='w-full py-2 border-b border-gray-300 flex items-center gap-2'>
+      
+        <div className='w-full py-2 border-none flex items-center gap-2 mt-2'>
           <MdFastfood className='text-xl text-gray-800 '/>
           <input 
             type='text' 
             required 
             value={title} 
             onChange={(e) => setTitle(e.target.value)}
-            placeholder='Type item name here: ' 
+            placeholder='Type title here' 
             className='w-full h-full text-lg bg-transparent 
             outline-none border-none placeholder:text-gray-400'
           />
@@ -233,8 +237,8 @@ const DBItems = () => {
             </div>
           </div>
         ) : (
-          <div className='w-full py-2 border-b border-gray-300 flex items-center gap-2 mt-2'>
-            <MdAttachMoney className='text-xl text-gray-800 '/>
+          <div className='w-full py-2 border-b border-gray-300 flex items-center gap-2'>
+                        <MdAttachMoney className='text-xl text-gray-800 '/>
             <input 
               type='number' 
               required 
@@ -247,7 +251,21 @@ const DBItems = () => {
           </div>
         )}
 
-        <div className="group flex justify-center items-center flex-col border-2 border-dotted border-gray-300 w-full h-225 md:h-420 cursor-pointer rounded-lg">
+        <div className='w-full py-2 border-none flex items-center gap-2 mt-2'>
+          <MdDescription className='text-xl text-gray-800 '/>
+          <input 
+            type='text' 
+            required 
+            value={description} 
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder='Type description here' 
+            className='w-full h-full text-lg bg-transparent 
+            outline-none border-none placeholder:text-gray-400'
+          />
+        </div>
+  
+
+        <div className="group flex justify-center items-center flex-col border-2 border-dotted border-gray-300 w-full h-225 md:h-420 cursor-pointer rounded-lg bg-white">
           {isLoading ? <Spinner /> : <>
             {!imageAsset ? (
               <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
@@ -258,8 +276,8 @@ const DBItems = () => {
                 <input type="file" name="uploadimage" accept="image/*" onChange={uploadImage} className="w-0 h-0"/>
               </label>
             ) : (
-              <div className="relative h-full">
-                <img src={imageAsset} alt="uploaded image" className="w-full h-full object-cover"/>
+              <div className="relative w-full h-full">
+                <img src={imageAsset} alt="uploaded image" className="w-full h-full object-cover rounded-lg"/>
                 <button type="button" className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none hover:shadow-md duration-500 transition-all ease-in-out" onClick={deleteImage}>
                   <MdDelete className="text-white" />
                 </button>
@@ -282,5 +300,5 @@ const DBItems = () => {
   );
 };
 
-export default DBItems;
+export default DBNewItem;
 
