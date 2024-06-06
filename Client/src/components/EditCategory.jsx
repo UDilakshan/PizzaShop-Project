@@ -15,6 +15,7 @@ import { getAllFoodItems, saveItem } from '../utils/firebaseFunctions';
 import { actionType } from "../context/reducer";
 import { useStateValue } from "../context/StateProvider";
 import { useNavigate } from 'react-router-dom';
+import { moreImages } from '../utils/data';
 
 
 
@@ -24,6 +25,7 @@ const EditCategory = () => {
   const [fields, setFields] = useState(false);
   const [alertStatus, setAlertStatus] = useState("danger");
   const [msg, setMsg] = useState(null);
+  const [category, setCategory] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(null);
   const [{ foodItems }, dispatch] = useStateValue();
@@ -89,7 +91,7 @@ const EditCategory = () => {
   const saveDetails = () => {
     setIsLoading(true);
     try {
-      if (!title || !imageAsset) {
+      if (!imageAsset) {
         setFields(true);
         setMsg('Required fields can not be empty');
         setAlertStatus('danger');
@@ -104,7 +106,7 @@ const EditCategory = () => {
             id:`${Date.now()}`,
             title : title,
             imageURL : imageAsset,
-            category : categoryData,
+            category : category,
            }
 
            saveItem(data)
@@ -185,12 +187,12 @@ const EditCategory = () => {
 
 
         
-{/*         <div className='w-full'>
+        <div className='w-full'>
          <div className='flex items-center gap-2' >
           <select onChange={(e)=>setCategory(e.target.value)} className='outline-none w-full text-base border-b-2 
           border-gray-200 p-2 rounded-md cursor-pointer'>
-            <option value="other" className='bg-white'>Select</option>
-            {categoryData2 && categoryData2.map(item => (
+            <option value="other" className='bg-white'>Select here...</option>
+            {moreImages && moreImages.map(item => (
               <option key={item.id} className='text-base border-0 outline-none capitalize bg-white text-headingColor'
               value={item.urlParamName}>
                 {item.name}
@@ -200,7 +202,7 @@ const EditCategory = () => {
             
           </select>
         </div>
-        </div> */}
+        </div> 
 
 
         <div className='group flex justify-center items-center flex-col

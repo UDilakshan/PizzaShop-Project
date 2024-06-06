@@ -98,7 +98,7 @@ const CreateContainer = () => {
   const saveDetails = () => {
     setIsLoading(true);
     try {
-      if (!name || !imageAsset || (!usualPrice && !smallPrice && !mediumPrice && !largePrice) || !category) {
+      if ( !imageAsset || (!usualPrice && !smallPrice && !mediumPrice && !largePrice)) {
         setFields(true);
         setMsg('Required fields cannot be empty');
         setAlertStatus('danger');
@@ -215,7 +215,7 @@ const CreateContainer = () => {
               className="border-none bg-cartNumBg px-2 hover:bg-black py-1 rounded-xl
               transition-all ease-in-out text-white md:ml-8 md:text-base text-sm"
               onClick={() => navigate('/EditCategory')}>
-              Edit Category
+              More Image
             </motion.button>
           </div>
         </div>

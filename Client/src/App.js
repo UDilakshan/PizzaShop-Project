@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Route, Routes, useLocation, BrowserRouter as Router } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  CartContainter, ContactUs, Header, Offers, FullMenuContainer, Footer, Dashboard } from "./components";
+import { CreateContainer, HomeContainer, MenuContainer, EditCategory, AboutUs,  CartContainter, ContactUs, Header, FullMenuContainer, Footer, Dashboard } from "./components";
 
 import { useStateValue } from "./context/StateProvider";
 import { getAllFoodItems } from "./utils/firebaseFunctions";
@@ -53,7 +53,6 @@ function App() {
             <Route path="/MenuContainer" element={<MenuContainer />} />
             <Route path="FullMenuContainer" element={<FullMenuContainer />} />
             <Route path="/EditCategory" element={<EditCategory />} />
-            <Route path="/Offers" element={<Offers />} />
             <Route path="/Dashboard" element={<Dashboard />} />
           </Routes>          
         </main>

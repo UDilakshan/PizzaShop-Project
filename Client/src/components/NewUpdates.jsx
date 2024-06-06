@@ -1,27 +1,31 @@
-import React, {Component} from 'react';
+import React,{Component} from 'react';
+import { useStateValue } from '../context/StateProvider';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
-
-import Bn1 from "../images/ShowCaseImages/Pizza1.gif";
-import Bn2 from "../images/ShowCaseImages/Pizza2.png";
-import Bn3 from "../images/ShowCaseImages/Pizza3.png";
-import Bn4 from "../images/ShowCaseImages/Pizza4.png";
-
-
-const pizzaImages = [Bn1,Bn2,Bn3,Bn4];
+import Loader from '../Dashboard/Loader';
 
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
-      className={className}
-      style={{ ...style, display: "block", background: "black" }}
-      onClick={onClick}
-    />
+    className={className}
+    style={{
+      ...style,
+      display: "flex",
+      alignItems:"center",
+      justifyContent:"center",
+      background: "rgb(20 83 45)",
+      width: "20px",
+      height: "20px",
+      borderRadius: "10%",
+      fontSize: "20px", 
+    }}
+    onClick={onClick}
+  />
   );
 }
 
@@ -30,7 +34,17 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black" }}
+      style={{
+        ...style,
+        display: "flex",
+        alignItems:"center",
+        justifyContent:"center",
+        background: "rgb(20 83 45)",
+        width: "20px",
+        height: "20px",
+        borderRadius: "10%",
+        fontSize: "20px", 
+      }}
       onClick={onClick}
     />
   );
@@ -73,6 +87,15 @@ function NewUpdates() {
 
   const navigate = useNavigate();
 
+  const [{ foodItems }] = useStateValue();
+
+  const data = foodItems ? foodItems.filter(n => n.category === "New Updates") : [];
+
+  if (!data || data.length === 0 ) {
+    return <div className='flex items-end justify-center my:[30%] md:my-[20%]'>
+      <Loader /><span className='text-lg text-black'>Processing...</span>
+    </div>;
+  }
 
   return(
     <>
@@ -81,11 +104,11 @@ function NewUpdates() {
         <div>  
             <Slider {...settings}>
               {
-                pizzaImages.map((image, index) => (  
+                data && data.map(item => (  
                   <>
                       {/* for images  */}
-                      <motion.div key={index} className='w-auto flex items-center justify-center'>
-                          <img src={image} alt="Pizza Images" className='h-auto max-h-24 w-auto md:w-auto md:h-[300px] md:max-h-[300px] flex items-center justify-center rounded-xl cursor-pointer' onClick={() => navigate('/offers')} whileTap={{scale:0.9}}/>
+                      <motion.div key={item?.id} className='w-auto flex items-center justify-center'>
+                          <img src={item?.imageURL} alt="Pizza Images" className='h-auto max-h-24 w-auto md:w-auto md:h-[300px] md:max-h-[300px] flex items-center justify-center rounded-xl cursor-pointer' onClick={() => navigate('/offers')} whileTap={{scale:0.9}}/>
                           
                       </motion.div>
                   </>            

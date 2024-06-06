@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import NewUpdates from '../components/NewUpdates';
 import { useStateValue } from '../context/StateProvider';
-
 import CartContainter from './CartContainter';
-
-import CategoryContainer from '../components/CategoryContainer';
+import Offers from '../components/Offers';
 
 
 function HomeContainer() {
-   const [{cartShow},{foodItems},dispatch]=useStateValue();
+   const [{cartShow},dispatch]=useStateValue();
    useEffect (()=> {},[cartShow]);
+
+ 
 
   return (
     <div className='mt-28 w-full pb-40'>
 
-       <NewUpdates/>
-       <CategoryContainer />
+       <NewUpdates/> 
+       <Offers />
 
        {cartShow && (<CartContainter/>)} 
 

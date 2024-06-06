@@ -11,6 +11,12 @@ export const categories = [
   ];
 
 
+export const moreImages = [
+  {  id: 1, name: "Categories", urlParamName: "Categories",},
+  {  id: 2,  name: "New Updates", urlParamName: "New Updates",},
+  ];
+
+
 export const contact_types = [
 { id: 1, name: "Order Inquiry", urlParamName: "Order Inquiry",},
 { id: 2, name: "Appericiation", urlParamName: "Appericiation",},

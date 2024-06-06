@@ -1,11 +1,9 @@
 
-export {default as CategoryContainer} from "./CategoryContainer";
 export {default as CreateContainer} from "./CreateContainer";
 export {default as Customization} from './Customization';
 export {default as EditCategory} from './EditCategory';
 export {default as Loader} from '../Dashboard/Loader';
 export {default as NewUpdates} from "./NewUpdates";
-export {default as RowContainer} from "./RowContainer";
 export {default as Offers} from "./Offers";
 export {default as Dashboard} from "../Dashboard/Dashboard";
 

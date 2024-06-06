@@ -48,13 +48,14 @@ const Customization = ({ visible, onClose, data }) => {
 
   if (!visible) return null;
   return (
-    <div onClick={handleClose} id='outOfBorder' className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center'>
+    <div onClick={handleClose} id='outOfBorder' className='fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center'>
       <div className="bg-white p-4 rounded-lg relative w-[90%] md:w-[60%] border border-gray-300 md:h-[70%] h-[80%] mt-5">
         <div>
           <button onClick={onClose} className='absolute top-0 right-0 m-2'>
             <IoIosCloseCircle className='text-2xl' />
           </button>
         </div>
+
         <div className='absoulute mt-8 w-full h-[90%]'>
           {/* Desktop */}
           <div className='flex flex-row gap-1'>  
