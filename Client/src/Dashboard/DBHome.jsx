@@ -1,10 +1,11 @@
-
 import React from 'react'
 
 const DBHome = () => {
   return (
-    <div>DBHome</div>
+    <div>
+      DBHome
+    </div>
   )
 }
 
-export default DBHome;
+export default DBHome
