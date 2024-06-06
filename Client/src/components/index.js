@@ -13,7 +13,7 @@ export {default as Dashboard} from "../Dashboard/Dashboard";
 
 
 export {default as AboutUs} from '../Container/AboutUs';
-export {default as CartContainter} from '../Container/CartContainter';
+export {default as CartContainer} from '../Container/CartContainter';
 export {default as ContactUs} from '../Container/ContactUs';
 export { default as Header} from "../Container/Header";
 export { default as Footer} from "../Container/Footer";
@@ -29,7 +29,8 @@ export {default as DBRightSection} from "../Dashboard/DBRightSection";
 export {default as DBHeader} from "../Dashboard/DBHeader";
 export {default as DBHome} from "../Dashboard/DBHome";
 export {default as DBItems} from "../Dashboard/DBItems";
-export {default as DBOrders} from "../Dashboard/DBOrder";
-export {default as DBUsers} from "../Dashboard/DBOrder";
+export {default as DBOrders} from "../Dashboard/DBOrders";
+export {default as DBUsers} from "../Dashboard/DBUsers";
 export {default as DBNewitem} from "../Dashboard/DBNewItem";
-
+export {default as DataTable} from "../Dashboard/DataTable";
+export {default as Spinner} from "../Dashboard/Spinner";

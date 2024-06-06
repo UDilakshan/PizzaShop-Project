@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { DataTable } from '../components';
+
 
 const DBUsers = () => {
+
   return (
-    <div>DBUsers</div>
-  )
+    <div className='flex items-center justify-self-center gap-4 pt-6 w-full'>
+     <DataTable/>
+      
+    </div>
+  );
 }
 
-export default DBUsers
+export default DBUsers;

@@ -9,13 +9,13 @@ export const isNotActiveStyles =
 
 
 export const statuses = [
-{id:1, title: "Drinks", category: "drinks" },
-{id:2, title: "Deserts", category: "deserts" },
-{id:3, title: "Fruits", category: "fruits" },
-{id:4, title: "Rice", category: "rice" },
-{id:5, title: "Curry", category: "curry" },
-{id:6, title: "Chinese", category: "chinese" },
-{id:7, title: "Bread", category: "bread" },
+{id:1, title: "Offers", category: "Offers" },
+{id:2, title: "Premium Non Veg", category: "Premium Non Veg" },
+{id:3, title: "Starters", category: "Starters" },
+{id:4, title: "Non Veg", category: "Non Veg" },
+{id:5, title: "Veg", category: "Veg" },
+{id:6, title: "Desserts", category: "Desserts" },
+{id:7, title: "Drinks", category: "Drinks" },
 
 
 ];

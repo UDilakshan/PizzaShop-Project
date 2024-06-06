@@ -8,7 +8,7 @@ const DBRightSection = () => {
             <DBHeader />
             <div className="flex flex-col flex-l overflow-y-scroll scrollbar-none">
               <Routes>
-                <Route path = "/home" element={<DBHome/>}/>
+                <Route path = "/Home" element={<DBHome/>}/>
                 <Route path = "/orders" element={<DBOrders/>}/>
                 <Route path = "/items" element={<DBItems/>}/>
                 <Route path = "/addnewitems" element={<DBNewitem/>}/>

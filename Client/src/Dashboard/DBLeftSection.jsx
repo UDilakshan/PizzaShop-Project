@@ -95,4 +95,4 @@ const DBLeftSection = () => {
     );
 };
 
-export default DBLeftSection;
+export default DBLeftSection; 
