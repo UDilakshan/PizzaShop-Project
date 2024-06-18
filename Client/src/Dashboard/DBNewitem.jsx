@@ -20,6 +20,7 @@ const DBNewItem = () => {
   const [msg, setMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [{ foodItems }, dispatch] = useStateValue();
 
   const statuses = [
@@ -36,14 +37,15 @@ const DBNewItem = () => {
   }, []);
 
   const uploadImage = (e) => {
-    setIsLoading(true); // Start spinner when image uploading begins
+    setIsLoading(true);
     const imageFile = e.target.files[0];
     const storageRef = ref(storage, `Images/Check/${Date.now()}-${imageFile.name}`);
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
   
     uploadTask.on('state_changed', 
       (snapshot) => {
-        const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
       }, 
       (error) => {
         console.log(error);
@@ -52,16 +54,17 @@ const DBNewItem = () => {
         setAlertStatus('danger');
         setTimeout(() => {
           setFields(false); 
-          setIsLoading(false); // Stop spinner on error
+          setIsLoading(false);
         }, 4000);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
           setImageAsset(downloadURL);
-          setIsLoading(false); // Stop spinner after successful upload
+          setIsLoading(false);
           setFields(true);
           setMsg("Image uploaded successfully");
           setAlertStatus("success");
+          setUploadProgress(0);
           setTimeout(() => {
             setFields(false);
           }, 4000);
@@ -71,7 +74,7 @@ const DBNewItem = () => {
   };
 
   const deleteImage = () => {
-    setIsLoading(true);
+    setIsLoading(false);
     const deleteRef = ref(storage, imageAsset);
     deleteObject(deleteRef).then(() => {
       setImageAsset(null);
@@ -105,7 +108,7 @@ const DBNewItem = () => {
           price: category === "Veg" || category === "Non Veg"
             ? { medium: mediumPrice, small: smallPrice, large: largePrice }
             : price,
-          description: description // Include description in data
+          description: description
         };
   
         saveItem(data);
@@ -192,7 +195,7 @@ const DBNewItem = () => {
                   : 'bg-transparent text-textColor'
               }`}
             >
-                            {data.title}
+              {data.title}
             </p>
           ))}
         </div>
@@ -238,7 +241,7 @@ const DBNewItem = () => {
           </div>
         ) : (
           <div className='w-full py-2 border-b border-gray-300 flex items-center gap-2'>
-                        <MdAttachMoney className='text-xl text-gray-800 '/>
+            <MdAttachMoney className='text-xl text-gray-800 '/>
             <input 
               type='number' 
               required 
@@ -263,27 +266,32 @@ const DBNewItem = () => {
             outline-none border-none placeholder:text-gray-400'
           />
         </div>
-  
 
         <div className="group flex justify-center items-center flex-col border-2 border-dotted border-gray-300 w-full h-225 md:h-420 cursor-pointer rounded-lg bg-white">
-          {isLoading ? <Spinner /> : <>
-            {!imageAsset ? (
-              <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-                <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-                  <MdCloudUpload className="text-gray-500 text-3xl hover:text-gray-700" />
-                  <p className="text-gray-500 hover:text-gray-700">Click here to upload</p>
+          {isLoading ? (
+            <>
+              <Spinner />
+            </>
+          ) : (
+            <>
+              {!imageAsset ? (
+                <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-2">
+                    <MdCloudUpload className="text-gray-500 text-3xl hover:text-gray-700" />
+                    <p className="text-gray-500 hover:text-gray-700">Click here to upload</p>
+                  </div>
+                  <input type="file" name="uploadimage" accept="image/*" onChange={uploadImage} className="w-0 h-0"/>
+                </label>
+              ) : (
+                <div className="relative w-full h-full">
+                  <img src={imageAsset} alt="uploaded image" className="w-full h-full object-cover rounded-lg"/>
+                  <button type="button" className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none hover:shadow-md duration-500 transition-all ease-in-out" onClick={deleteImage}>
+                    <MdDelete className="text-white" />
+                  </button>
                 </div>
-                <input type="file" name="uploadimage" accept="image/*" onChange={uploadImage} className="w-0 h-0"/>
-              </label>
-            ) : (
-              <div className="relative w-full h-full">
-                <img src={imageAsset} alt="uploaded image" className="w-full h-full object-cover rounded-lg"/>
-                <button type="button" className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none hover:shadow-md duration-500 transition-all ease-in-out" onClick={deleteImage}>
-                  <MdDelete className="text-white" />
-                </button>
-              </div>
-            )}
-          </>}
+              )}
+            </>
+          )}
         </div>
         
         <div className="w-full flex items-center justify-between">
